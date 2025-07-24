@@ -1,17 +1,10 @@
 import React, { useState } from 'react'
-import { Car, Menu, X } from 'lucide-react' // Removed LogOut, Plus, User
+import { Car, Menu, X } from 'lucide-react'
 import { Link, useLocation } from 'react-router-dom'
-// import { useAuth } from '../hooks/useAuth' // Removed useAuth as it's no longer needed for header functionality
 
 export const Header: React.FC = () => {
-  // const { user, signOut } = useAuth() // No longer needed
   const location = useLocation()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-
-  // const handleSignOut = async () => { // No longer needed
-  //   await signOut()
-  //   setIsMobileMenuOpen(false)
-  // }
 
   const closeMobileMenu = () => {
     setIsMobileMenuOpen(false)
@@ -63,7 +56,17 @@ export const Header: React.FC = () => {
             >
               Contact
             </Link>
-            {/* Removed Admin Panel/Sign Out and Seller Login links from desktop nav */}
+            {/* Admin Login Link - Desktop */}
+            <Link
+              to="/admin"
+              className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                isActive('/admin') 
+                  ? 'bg-blue-600 text-white' // You can choose a different color for admin
+                  : 'text-gray-300 hover:text-white'
+              }`}
+            >
+              Admin Login
+            </Link>
           </nav>
 
           {/* Mobile Menu Button */}
@@ -120,7 +123,18 @@ export const Header: React.FC = () => {
             >
               Contact
             </Link>
-            {/* Removed Admin Panel/Sign Out and Seller Login links from mobile menu */}
+            {/* Admin Login Link - Mobile */}
+            <Link
+              to="/admin"
+              onClick={closeMobileMenu}
+              className={`block w-full text-left px-3 py-2 rounded-md text-base font-medium transition-colors ${
+                isActive('/admin') 
+                  ? 'bg-blue-600 text-white' // You can choose a different color for admin
+                  : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+              }`}
+            >
+              Admin Login
+            </Link>
           </div>
         </div>
       )}
