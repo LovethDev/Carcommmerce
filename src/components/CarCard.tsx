@@ -39,7 +39,7 @@ export const CarCard: React.FC<CarCardProps> = ({ car }) => {
   }
 
   const handleCallInspection = () => {
-    const phoneNumber = '+2341234567890'
+    const phoneNumber = '+2349162534022'
     window.open(`tel:${phoneNumber}`)
   }
 
