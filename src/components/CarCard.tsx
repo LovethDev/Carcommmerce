@@ -9,6 +9,7 @@ interface CarCardProps {
 export const CarCard: React.FC<CarCardProps> = ({ car }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [showImageModal, setShowImageModal] = useState(false)
+  const [showFullDescription, setShowFullDescription] = useState(false) // New state for description
 
   // Get all available images
   const images = React.useMemo(() => {
@@ -33,7 +34,7 @@ export const CarCard: React.FC<CarCardProps> = ({ car }) => {
   }
 
   const handleImageClick = () => {
-    if (images.length > 0) { // Changed condition to check for at least one image
+    if (images.length > 0) {
       setShowImageModal(true)
     }
   }
@@ -44,12 +45,10 @@ export const CarCard: React.FC<CarCardProps> = ({ car }) => {
   }
 
   const formatPrice = (price: number) => {
-    // Handle edge cases and ensure price is a valid number
     if (!price || isNaN(price) || price < 0) {
       return '₦0'
     }
     
-    // Format large numbers with proper separators
     const formattedNumber = price.toLocaleString('en-NG', {
       minimumFractionDigits: 0,
       maximumFractionDigits: 0
@@ -94,17 +93,17 @@ export const CarCard: React.FC<CarCardProps> = ({ car }) => {
               </button>
 
               {/* Image counter */}
-              <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-white bg-black bg-opacity-50 px-2 py-0.5 rounded-full text-xs"> {/* Reduced font size */}
+              <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-white bg-black bg-opacity-50 px-2 py-0.5 rounded-full text-xs">
                 {currentImageIndex + 1} / {images.length}
               </div>
 
               {/* Image indicators */}
-              <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2 flex space-x-1.5"> {/* Adjusted bottom spacing and dot size slightly */}
+              <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2 flex space-x-1.5">
                 {images.map((_, index) => (
                   <button
                     key={index}
                     onClick={() => setCurrentImageIndex(index)}
-                    className={`w-2.5 h-2.5 rounded-full transition-colors ${ // Reduced size
+                    className={`w-2.5 h-2.5 rounded-full transition-colors ${
                       index === currentImageIndex ? 'bg-white' : 'bg-white bg-opacity-50'
                     }`}
                   />
@@ -146,12 +145,12 @@ export const CarCard: React.FC<CarCardProps> = ({ car }) => {
                   </button>
 
                   {/* Image indicators */}
-                  <div className="absolute bottom-1.5 left-1/2 transform -translate-x-1/2 flex space-x-1"> {/* Adjusted bottom spacing */}
+                  <div className="absolute bottom-1.5 left-1/2 transform -translate-x-1/2 flex space-x-1">
                     {images.map((_, index) => (
                       <button
                         key={index}
                         onClick={() => setCurrentImageIndex(index)}
-                        className={`w-1.5 h-1.5 rounded-full transition-colors ${ // Reduced size
+                        className={`w-1.5 h-1.5 rounded-full transition-colors ${
                           index === currentImageIndex ? 'bg-white' : 'bg-white bg-opacity-50'
                         }`}
                       />
@@ -159,7 +158,7 @@ export const CarCard: React.FC<CarCardProps> = ({ car }) => {
                   </div>
 
                   {/* Click to expand hint */}
-                  <div className="absolute top-2 right-2 bg-black bg-opacity-50 text-white text-xs px-1.5 py-0.5 rounded"> {/* Reduced padding and font size */}
+                  <div className="absolute top-2 right-2 bg-black bg-opacity-50 text-white text-xs px-1.5 py-0.5 rounded">
                     Click to expand
                   </div>
                 </>
@@ -168,24 +167,24 @@ export const CarCard: React.FC<CarCardProps> = ({ car }) => {
           ) : (
             <div className="w-full h-48 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
               <div className="text-center">
-                <div className="w-12 h-12 bg-gray-300 rounded-full mx-auto mb-1 flex items-center justify-center"> {/* Reduced size */}
-                  <span className="text-xl text-gray-500">🚗</span> {/* Reduced emoji size */}
+                <div className="w-12 h-12 bg-gray-300 rounded-full mx-auto mb-1 flex items-center justify-center">
+                  <span className="text-xl text-gray-500">🚗</span>
                 </div>
-                <p className="text-gray-500 text-xs">No Image</p> {/* Reduced font size */}
+                <p className="text-gray-500 text-xs">No Image</p>
               </div>
             </div>
           )}
         </div>
 
-        <div className="p-4"> {/* Reduced padding */}
-          <div className="flex items-start justify-between mb-2"> {/* Reduced margin-bottom */}
+        <div className="p-4">
+          <div className="flex items-start justify-between mb-2">
             <div className="flex-1">
-              <h3 className="text-lg font-bold text-gray-900 mb-0.5"> {/* Reduced font size and margin */}
+              <h3 className="text-lg font-bold text-gray-900 mb-0.5">
                 {car.brand} {car.model}
               </h3>
-              <div className="flex items-center text-gray-600"> {/* Removed mb-2 */}
-                <Calendar className="w-3.5 h-3.5 mr-1" /> {/* Reduced icon size */}
-                <span className="text-xs">{car.year}</span> {/* Reduced font size */}
+              <div className="flex items-center text-gray-600">
+                <Calendar className="w-3.5 h-3.5 mr-1" />
+                <span className="text-xs">{car.year}</span>
               </div>
             </div>
             <div className="text-left ml-45 flex-shrink-0">
@@ -196,16 +195,30 @@ export const CarCard: React.FC<CarCardProps> = ({ car }) => {
           </div>
 
           {car.description && (
-            <p className="text-gray-600 text-xs mb-3 line-clamp-3"> {/* Reduced font size and margin */}
-              {car.description}
-            </p>
+            <div>
+              <p
+                className={`text-gray-600 text-xs mb-1 ${
+                  showFullDescription ? '' : 'line-clamp-3'
+                }`}
+              >
+                {car.description}
+              </p>
+              {car.description.split('\n').length > 3 || car.description.length > 150 ? ( // Adjust threshold as needed
+                <button
+                  onClick={() => setShowFullDescription(!showFullDescription)}
+                  className="text-blue-600 text-xs hover:underline mt-1 block"
+                >
+                  {showFullDescription ? 'View Less' : 'View More'}
+                </button>
+              ) : null}
+            </div>
           )}
 
           <button
             onClick={handleCallInspection}
-            className="w-full bg-red-600 text-white py-2.5 px-3 rounded-lg hover:bg-red-700 transition-colors font-medium flex items-center justify-center text-sm" // Reduced padding and font size
+            className="w-full bg-red-600 text-white py-2.5 px-3 rounded-lg hover:bg-red-700 transition-colors font-medium flex items-center justify-center text-sm mt-3" // Added margin-top
           >
-            <Phone className="w-3.5 h-3.5 mr-1.5" /> {/* Reduced icon size and margin */}
+            <Phone className="w-3.5 h-3.5 mr-1.5" />
             Call for Inspection
           </button>
         </div>
