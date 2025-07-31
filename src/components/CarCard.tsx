@@ -9,7 +9,7 @@ interface CarCardProps {
 export const CarCard: React.FC<CarCardProps> = ({ car }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [showImageModal, setShowImageModal] = useState(false)
-  const [showFullDescription, setShowFullDescription] = useState(false) // New state for description
+  const [showFullDescription, setShowFullDescription] = useState(false)
 
   // Get all available images
   const images = React.useMemo(() => {
@@ -48,12 +48,12 @@ export const CarCard: React.FC<CarCardProps> = ({ car }) => {
     if (!price || isNaN(price) || price < 0) {
       return '₦0'
     }
-    
+
     const formattedNumber = price.toLocaleString('en-NG', {
       minimumFractionDigits: 0,
       maximumFractionDigits: 0
     })
-    
+
     return `₦${formattedNumber}`
   }
 
@@ -118,7 +118,7 @@ export const CarCard: React.FC<CarCardProps> = ({ car }) => {
 
   return (
     <>
-      <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+      <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 mx-auto max-w-sm">
         <div className="relative aspect-w-16 aspect-h-9 bg-gray-200">
           {images.length > 0 ? (
             <>
@@ -178,8 +178,8 @@ export const CarCard: React.FC<CarCardProps> = ({ car }) => {
 
         <div className="p-4">
           <div className="flex items-start justify-between mb-2">
-            <div className="flex-1">
-              <h3 className="text-lg font-bold text-gray-900 mb-0.5">
+            <div className="flex-1 pr-2"> {/* Added padding-right to create space */}
+              <h3 className="text-lg font-bold text-gray-900 mb-0.5 leading-tight">
                 {car.brand} {car.model}
               </h3>
               <div className="flex items-center text-gray-600">
@@ -187,39 +187,39 @@ export const CarCard: React.FC<CarCardProps> = ({ car }) => {
                 <span className="text-xs">{car.year}</span>
               </div>
             </div>
-            <div className="text-left ml-45 flex-shrink-0">
-              <div className="text-green-500 font-bold text-xs leading-tight whitespace-nowrap">
+            <div className="text-right flex-shrink-0">
+              <div className="text-green-500 font-bold text-base leading-tight"> {/* Increased font size for price */}
                 {formatPrice(car.price)}
               </div>
             </div>
           </div>
 
           {car.description && (
-            <div>
+            <div className="mb-3"> {/* Added margin-bottom */}
               <p
-                className={`text-gray-600 text-xs mb-1 ${
+                className={`text-gray-600 text-xs ${
                   showFullDescription ? '' : 'line-clamp-3'
                 }`}
               >
                 {car.description}
               </p>
-              {car.description.split('\n').length > 3 || car.description.length > 150 ? ( // Adjust threshold as needed
+              {(car.description.split('\n').length > 3 || car.description.length > 150) && (
                 <button
                   onClick={() => setShowFullDescription(!showFullDescription)}
                   className="text-blue-600 text-xs hover:underline mt-1 block"
                 >
                   {showFullDescription ? 'View Less' : 'View More'}
                 </button>
-              ) : null}
+              )}
             </div>
           )}
 
           <button
             onClick={handleCallInspection}
-            className="w-full bg-red-600 text-white py-2.5 px-3 rounded-lg hover:bg-red-700 transition-colors font-medium flex items-center justify-center text-sm mt-3" // Added margin-top
+            className="w-12 h-12 bg-red-600 text-white rounded-full flex items-center justify-center hover:bg-red-700 transition-colors shadow-md mx-auto" // Centered and made it a circle
+            aria-label="Call for Inspection"
           >
-            <Phone className="w-3.5 h-3.5 mr-1.5" />
-            Call for Inspection
+            <Phone className="w-6 h-6" /> {/* Increased icon size for better tap target */}
           </button>
         </div>
       </div>
