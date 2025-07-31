@@ -116,9 +116,19 @@ export const CarCard: React.FC<CarCardProps> = ({ car }) => {
     )
   }
 
+  // Get description lines
+  const descriptionLines = car.description ? car.description.split('\n') : [];
+  const displayDescription = showFullDescription
+    ? car.description
+    : descriptionLines.slice(0, 2).join('\n'); // Display first two lines
+
+  const shouldShowViewMore = descriptionLines.length > 2 || (car.description && car.description.length > 100); // Adjust length threshold as needed
+
+
   return (
     // Added mb-4 for vertical space between cards when stacked on mobile
-    <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 mx-auto max-w-sm mb-4">
+    // Added px-2 to introduce horizontal padding, giving space from screen edges
+    <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 mx-auto max-w-sm mb-4 px-2">
       <div className="relative aspect-w-16 aspect-h-9 bg-gray-200">
         {images.length > 0 ? (
           <>
@@ -196,18 +206,17 @@ export const CarCard: React.FC<CarCardProps> = ({ car }) => {
 
         {car.description && (
           <div className="mb-3">
-            <p className="text-gray-600 text-xs">
-              {showFullDescription ? car.description : car.description.split('\n')[0]}
-              {/* Display first line or full description */}
+            <p className="text-gray-600 text-xs whitespace-pre-line"> {/* Added whitespace-pre-line */}
+              {displayDescription}
             </p>
-            {car.description.split('\n').length > 1 || car.description.length > 50 ? ( // Adjusted threshold for "View More"
+            {shouldShowViewMore && (
               <button
                 onClick={() => setShowFullDescription(!showFullDescription)}
                 className="text-blue-600 text-xs hover:underline mt-1 block"
               >
                 {showFullDescription ? 'View Less' : 'View More'}
               </button>
-            ) : null}
+            )}
           </div>
         )}
 
