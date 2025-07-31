@@ -11,13 +11,18 @@ export const CarCard: React.FC<CarCardProps> = ({ car }) => {
   const [showImageModal, setShowImageModal] = useState(false);
   const [showFullDescription, setShowFullDescription] = useState(false);
 
-  // Get all available images
+  // Memoize all available images to avoid recalculation on every render
   const images = React.useMemo(() => {
     const imageList: string[] = [];
-    if (car.image_url) imageList.push(car.image_url);
-    if (car.image_urls && Array.isArray(car.image_urls)) {
+    // Ensure car.image_url exists and is not already in the list
+    if (car.image_url && !imageList.includes(car.image_url)) {
+      imageList.push(car.image_url);
+    }
+    // Ensure car.image_urls is an array before iterating
+    if (Array.isArray(car.image_urls)) {
       car.image_urls.forEach(url => {
-        if (url && !imageList.includes(url)) {
+        // Ensure URL is not null/undefined/empty and not a duplicate
+        if (url && typeof url === 'string' && url.trim() !== '' && !imageList.includes(url)) {
           imageList.push(url);
         }
       });
@@ -26,11 +31,17 @@ export const CarCard: React.FC<CarCardProps> = ({ car }) => {
   }, [car.image_url, car.image_urls]);
 
   const nextImage = () => {
-    setCurrentImageIndex((prev) => (prev + 1) % images.length);
+    // Only proceed if there are images
+    if (images.length > 0) {
+      setCurrentImageIndex((prev) => (prev + 1) % images.length);
+    }
   };
 
   const prevImage = () => {
-    setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length);
+    // Only proceed if there are images
+    if (images.length > 0) {
+      setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length);
+    }
   };
 
   const handleImageClick = () => {
@@ -41,11 +52,13 @@ export const CarCard: React.FC<CarCardProps> = ({ car }) => {
 
   const handleCallInspection = () => {
     const phoneNumber = '+2349162534022';
-    window.open(`tel:${phoneNumber}`);
+    // Use encodeURIComponent for phone numbers to handle special characters if any (though rare for phone numbers)
+    window.open(`tel:${encodeURIComponent(phoneNumber)}`);
   };
 
   const formatPrice = (price: number) => {
-    if (!price || isNaN(price) || price < 0) {
+    // Robust check for price validity
+    if (price === null || price === undefined || isNaN(price) || price < 0) {
       return '₦0';
     }
 
@@ -62,43 +75,49 @@ export const CarCard: React.FC<CarCardProps> = ({ car }) => {
     if (!showImageModal) return null;
 
     return (
-      <div className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-2"> {/* Reduced padding */}
-        <div className="relative max-w-2xl max-h-full"> {/* Reduced max-width */}
+      <div className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-2">
+        <div className="relative max-w-2xl max-h-full">
           <button
             onClick={() => setShowImageModal(false)}
-            className="absolute top-2 right-2 text-white bg-black bg-opacity-50 p-1 rounded-full hover:bg-opacity-70 z-10" {/* Reduced padding */}
+            className="absolute top-2 right-2 text-white bg-black bg-opacity-50 p-1 rounded-full hover:bg-opacity-70 z-10"
+            aria-label="Close image modal" // Added aria-label for accessibility
           >
-            <X className="w-4 h-4" /> {/* Reduced icon size */}
+            <X className="w-4 h-4" />
           </button>
 
-          <img
-            src={images[currentImageIndex]}
-            alt={`${car.brand} ${car.model} - Image ${currentImageIndex + 1}`}
-            className="max-w-full max-h-[60vh] object-contain rounded-md" // Reduced max-height, rounded
-          />
+          {images.length > 0 && ( // Ensure there's an image to display
+             <img
+               src={images[currentImageIndex]}
+               alt={`${car.brand} ${car.model} - Image ${currentImageIndex + 1}`}
+               className="max-w-full max-h-[60vh] object-contain rounded-md"
+             />
+          )}
+
 
           {images.length > 1 && (
             <>
               <button
                 onClick={prevImage}
-                className="absolute left-2 top-1/2 transform -translate-y-1/2 text-white bg-black bg-opacity-50 p-2 rounded-full hover:bg-opacity-70" {/* Reduced padding */}
+                className="absolute left-2 top-1/2 transform -translate-y-1/2 text-white bg-black bg-opacity-50 p-2 rounded-full hover:bg-opacity-70"
+                aria-label="Previous image" // Added aria-label
               >
-                <ChevronLeft className="w-4 h-4" /> {/* Reduced icon size */}
+                <ChevronLeft className="w-4 h-4" />
               </button>
               <button
                 onClick={nextImage}
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 text-white bg-black bg-opacity-50 p-2 rounded-full hover:bg-opacity-70" {/* Reduced padding */}
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 text-white bg-black bg-opacity-50 p-2 rounded-full hover:bg-opacity-70"
+                aria-label="Next image" // Added aria-label
               >
-                <ChevronRight className="w-4 h-4" /> {/* Reduced icon size */}
+                <ChevronRight className="w-4 h-4" />
               </button>
 
               {/* Image counter */}
-              <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 text-white bg-black bg-opacity-50 px-1 py-0.5 rounded-full text-xs"> {/* Reduced padding/text size */}
+              <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 text-white bg-black bg-opacity-50 px-1 py-0.5 rounded-full text-xs">
                 {currentImageIndex + 1} / {images.length}
               </div>
 
               {/* Image indicators */}
-              <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-1"> {/* Adjusted position */}
+              <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-1">
                 {images.map((_, index) => (
                   <button
                     key={index}
@@ -106,6 +125,7 @@ export const CarCard: React.FC<CarCardProps> = ({ car }) => {
                     className={`w-1.5 h-1.5 rounded-full transition-colors ${
                       index === currentImageIndex ? 'bg-white' : 'bg-white bg-opacity-50'
                     }`}
+                    aria-label={`View image ${index + 1}`} // Added aria-label
                   />
                 ))}
               </div>
@@ -116,100 +136,105 @@ export const CarCard: React.FC<CarCardProps> = ({ car }) => {
     );
   };
 
-  // Get description lines
-  const descriptionLines = car.description ? car.description.split('\n') : [];
+  // Get description lines and determine display
+  const descriptionLines = car.description ? car.description.split('\n').filter(line => line.trim() !== '') : []; // Filter empty lines
   const displayDescription = showFullDescription
     ? car.description
-    : descriptionLines.slice(0, 2).join('\n'); // Display first two lines
+    : descriptionLines.slice(0, 2).join('\n');
 
+  // Condition for showing "View More" button
   const shouldShowViewMore = descriptionLines.length > 2 || (car.description && car.description.length > 100);
 
   return (
-    <div className="bg-white rounded-md shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-300 mx-auto max-w-[18rem] mb-2"> {/* Reduced max-width, shadow, rounded, mb */}
-      <div className="relative w-full h-24 bg-gray-200"> {/* Reduced image height by half (h-48 -> h-24) */}
+    <div className="bg-white rounded-md shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-300 mx-auto max-w-[18rem] mb-2">
+      <div className="relative w-full h-24 bg-gray-200">
         {images.length > 0 ? (
           <>
             <img
               src={images[currentImageIndex]}
               alt={`${car.brand} ${car.model} - Image ${currentImageIndex + 1}`}
-              className="w-full h-full object-cover cursor-pointer rounded-t-md" // Rounded
+              className="w-full h-full object-cover cursor-pointer rounded-t-md"
               onClick={handleImageClick}
+              onError={(e) => { e.currentTarget.src = 'https://via.placeholder.com/150?text=Image+Error'; e.currentTarget.alt = "Image not available"; }} // Fallback on error
             />
 
             {images.length > 1 && (
               <>
                 <button
                   onClick={prevImage}
-                  className="absolute left-1 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-0.5 rounded-full hover:bg-opacity-70 transition-opacity" {/* Reduced padding */}
+                  className="absolute left-1 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-0.5 rounded-full hover:bg-opacity-70 transition-opacity"
+                  aria-label="Previous image"
                 >
-                  <ChevronLeft className="w-3 h-3" /> {/* Reduced icon size */}
+                  <ChevronLeft className="w-3 h-3" />
                 </button>
                 <button
                   onClick={nextImage}
-                  className="absolute right-1 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-0.5 rounded-full hover:bg-opacity-70 transition-opacity" {/* Reduced padding */}
+                  className="absolute right-1 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-0.5 rounded-full hover:bg-opacity-70 transition-opacity"
+                  aria-label="Next image"
                 >
-                  <ChevronRight className="w-3 h-3" /> {/* Reduced icon size */}
+                  <ChevronRight className="w-3 h-3" />
                 </button>
 
                 {/* Image indicators */}
-                <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 flex space-x-0.5"> {/* Reduced spacing */}
+                <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 flex space-x-0.5">
                   {images.map((_, index) => (
                     <button
                       key={index}
                       onClick={() => setCurrentImageIndex(index)}
-                      className={`w-1 h-1 rounded-full transition-colors ${ // Reduced size
+                      className={`w-1 h-1 rounded-full transition-colors ${
                         index === currentImageIndex ? 'bg-white' : 'bg-white bg-opacity-50'
                       }`}
+                      aria-label={`View image ${index + 1}`}
                     />
                   ))}
                 </div>
 
                 {/* Click to expand hint */}
-                <div className="absolute top-1 right-1 bg-black bg-opacity-50 text-white text-[0.5rem] px-1 py-0.5 rounded"> {/* Reduced font/padding */}
+                <div className="absolute top-1 right-1 bg-black bg-opacity-50 text-white text-[0.5rem] px-1 py-0.5 rounded">
                   Click to expand
                 </div>
               </>
             )}
           </>
         ) : (
-          <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center rounded-t-md"> {/* Rounded */}
+          <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center rounded-t-md">
             <div className="text-center">
-              <div className="w-6 h-6 bg-gray-300 rounded-full mx-auto mb-0.5 flex items-center justify-center"> {/* Reduced size */}
-                <span className="text-base text-gray-500">🚗</span> {/* Reduced icon size */}
+              <div className="w-6 h-6 bg-gray-300 rounded-full mx-auto mb-0.5 flex items-center justify-center">
+                <span className="text-base text-gray-500">🚗</span>
               </div>
-              <p className="text-[0.5rem] text-gray-500">No Image</p> {/* Reduced font size */}
+              <p className="text-[0.5rem] text-gray-500">No Image</p>
             </div>
           </div>
         )}
       </div>
 
-      <div className="p-2"> {/* Reduced padding */}
-        <div className="flex items-start justify-between mb-1"> {/* Reduced margin-bottom */}
-          <div className="flex-1 pr-1"> {/* Reduced padding-right */}
-            <h3 className="text-sm font-bold text-gray-900 mb-0.5 leading-tight"> {/* Reduced font size (text-lg -> text-sm) */}
+      <div className="p-2">
+        <div className="flex items-start justify-between mb-1">
+          <div className="flex-1 pr-1">
+            <h3 className="text-sm font-bold text-gray-900 mb-0.5 leading-tight">
               {car.brand} {car.model}
             </h3>
             <div className="flex items-center text-gray-600">
-              <Calendar className="w-2.5 h-2.5 mr-0.5" /> {/* Reduced icon size */}
-              <span className="text-[0.625rem]">{car.year}</span> {/* Reduced font size (text-xs -> custom size) */}
+              <Calendar className="w-2.5 h-2.5 mr-0.5" />
+              <span className="text-[0.625rem]">{car.year}</span>
             </div>
           </div>
           <div className="text-right flex-shrink-0">
-            <div className="text-green-500 font-bold text-sm leading-tight"> {/* Reduced font size (text-base -> text-sm) */}
+            <div className="text-green-500 font-bold text-sm leading-tight">
               {formatPrice(car.price)}
             </div>
           </div>
         </div>
 
         {car.description && (
-          <div className="mb-2"> {/* Reduced margin-bottom */}
-            <p className="text-[0.625rem] text-gray-600 whitespace-pre-line"> {/* Reduced font size */}
+          <div className="mb-2">
+            <p className="text-[0.625rem] text-gray-600 whitespace-pre-line">
               {displayDescription}
             </p>
             {shouldShowViewMore && (
               <button
                 onClick={() => setShowFullDescription(!showFullDescription)}
-                className="text-blue-600 text-[0.625rem] hover:underline mt-0.5 block" {/* Reduced font size, margin-top */}
+                className="text-blue-600 text-[0.625rem] hover:underline mt-0.5 block"
               >
                 {showFullDescription ? 'View Less' : 'View More'}
               </button>
@@ -219,10 +244,10 @@ export const CarCard: React.FC<CarCardProps> = ({ car }) => {
 
         <button
           onClick={handleCallInspection}
-          className="w-8 h-8 bg-red-600 text-white rounded-full flex items-center justify-center hover:bg-red-700 transition-colors shadow-sm mx-auto mt-2" {/* Reduced size, shadow, mt */}
+          className="w-8 h-8 bg-red-600 text-white rounded-full flex items-center justify-center hover:bg-red-700 transition-colors shadow-sm mx-auto mt-2"
           aria-label="Call for Inspection"
         >
-          <Phone className="w-4 h-4" /> {/* Reduced icon size */}
+          <Phone className="w-4 h-4" />
         </button>
       </div>
 
