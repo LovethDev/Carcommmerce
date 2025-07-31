@@ -14,14 +14,11 @@ export const CarCard: React.FC<CarCardProps> = ({ car }) => {
   // Memoize all available images to avoid recalculation on every render
   const images = React.useMemo(() => {
     const imageList: string[] = [];
-    // Ensure car.image_url exists and is not already in the list
     if (car.image_url && !imageList.includes(car.image_url)) {
       imageList.push(car.image_url);
     }
-    // Ensure car.image_urls is an array before iterating
     if (Array.isArray(car.image_urls)) {
       car.image_urls.forEach(url => {
-        // Ensure URL is not null/undefined/empty and not a duplicate
         if (url && typeof url === 'string' && url.trim() !== '' && !imageList.includes(url)) {
           imageList.push(url);
         }
@@ -31,14 +28,12 @@ export const CarCard: React.FC<CarCardProps> = ({ car }) => {
   }, [car.image_url, car.image_urls]);
 
   const nextImage = () => {
-    // Only proceed if there are images
     if (images.length > 0) {
       setCurrentImageIndex((prev) => (prev + 1) % images.length);
     }
   };
 
   const prevImage = () => {
-    // Only proceed if there are images
     if (images.length > 0) {
       setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length);
     }
@@ -52,12 +47,10 @@ export const CarCard: React.FC<CarCardProps> = ({ car }) => {
 
   const handleCallInspection = () => {
     const phoneNumber = '+2349162534022';
-    // Use encodeURIComponent for phone numbers to handle special characters if any (though rare for phone numbers)
     window.open(`tel:${encodeURIComponent(phoneNumber)}`);
   };
 
   const formatPrice = (price: number) => {
-    // Robust check for price validity
     if (price === null || price === undefined || isNaN(price) || price < 0) {
       return '₦0';
     }
@@ -80,33 +73,32 @@ export const CarCard: React.FC<CarCardProps> = ({ car }) => {
           <button
             onClick={() => setShowImageModal(false)}
             className="absolute top-2 right-2 text-white bg-black bg-opacity-50 p-1 rounded-full hover:bg-opacity-70 z-10"
-            aria-label="Close image modal" // Added aria-label for accessibility
+            aria-label="Close image modal"
           >
             <X className="w-4 h-4" />
           </button>
 
-          {images.length > 0 && ( // Ensure there's an image to display
+          {images.length > 0 && (
              <img
-               src={images[currentImageIndex]}
+               src={images?.[currentImageIndex]}
                alt={`${car.brand} ${car.model} - Image ${currentImageIndex + 1}`}
-               className="max-w-full max-h-[60vh] object-contain rounded-md"
+               className="max-w-full max-h-[70vh] object-contain rounded-md"
              />
           )}
-
 
           {images.length > 1 && (
             <>
               <button
                 onClick={prevImage}
                 className="absolute left-2 top-1/2 transform -translate-y-1/2 text-white bg-black bg-opacity-50 p-2 rounded-full hover:bg-opacity-70"
-                aria-label="Previous image" // Added aria-label
+                aria-label="Previous image"
               >
                 <ChevronLeft className="w-4 h-4" />
               </button>
               <button
                 onClick={nextImage}
                 className="absolute right-2 top-1/2 transform -translate-y-1/2 text-white bg-black bg-opacity-50 p-2 rounded-full hover:bg-opacity-70"
-                aria-label="Next image" // Added aria-label
+                aria-label="Next image"
               >
                 <ChevronRight className="w-4 h-4" />
               </button>
@@ -122,10 +114,10 @@ export const CarCard: React.FC<CarCardProps> = ({ car }) => {
                   <button
                     key={index}
                     onClick={() => setCurrentImageIndex(index)}
-                    className={`w-1.5 h-1.5 rounded-full transition-colors ${
+                    className={`w-1 h-1 rounded-full transition-colors ${
                       index === currentImageIndex ? 'bg-white' : 'bg-white bg-opacity-50'
                     }`}
-                    aria-label={`View image ${index + 1}`} // Added aria-label
+                    aria-label={`View image ${index + 1}`}
                   />
                 ))}
               </div>
@@ -137,7 +129,7 @@ export const CarCard: React.FC<CarCardProps> = ({ car }) => {
   };
 
   // Get description lines and determine display
-  const descriptionLines = car.description ? car.description.split('\n').filter(line => line.trim() !== '') : []; // Filter empty lines
+  const descriptionLines = car.description ? car.description.split('\n').filter(line => line.trim() !== '') : [];
   const displayDescription = showFullDescription
     ? car.description
     : descriptionLines.slice(0, 2).join('\n');
@@ -147,15 +139,15 @@ export const CarCard: React.FC<CarCardProps> = ({ car }) => {
 
   return (
     <div className="bg-white rounded-md shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-300 mx-auto max-w-[18rem] mb-2">
-      <div className="relative w-full h-24 bg-gray-200">
+      <div className="relative w-full h-32 bg-gray-200">
         {images.length > 0 ? (
           <>
             <img
-              src={images[currentImageIndex]}
+              src={images?.[currentImageIndex]}
               alt={`${car.brand} ${car.model} - Image ${currentImageIndex + 1}`}
               className="w-full h-full object-cover cursor-pointer rounded-t-md"
               onClick={handleImageClick}
-              onError={(e) => { e.currentTarget.src = 'https://via.placeholder.com/150?text=Image+Error'; e.currentTarget.alt = "Image not available"; }} // Fallback on error
+              onError={(e) => { e.currentTarget.src = 'https://via.placeholder.com/150?text=Image+Error'; e.currentTarget.alt = "Image not available"; }}
             />
 
             {images.length > 1 && (
