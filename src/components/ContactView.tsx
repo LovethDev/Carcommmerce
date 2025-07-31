@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { Phone, Mail, MapPin, Clock, Send } from 'lucide-react'
+import React, { useState } from 'react';
+import { Phone, Mail, MapPin, Clock, Send, XCircle } from 'lucide-react';
 
 export const ContactView: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -7,110 +7,140 @@ export const ContactView: React.FC = () => {
     email: '',
     phone: '',
     message: ''
-  })
+  });
+
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    // Handle form submission here
-    alert('Thank you for your message! We will get back to you soon.')
-    setFormData({ name: '', email: '', phone: '', message: '' })
-  }
+    e.preventDefault();
+    // Simulate form submission logic (e.g., API call)
+    console.log('Form data submitted:', formData);
+
+    // Show the custom success message instead of an alert
+    setShowSuccessMessage(true);
+    
+    // Hide the message after 5 seconds
+    setTimeout(() => {
+      setShowSuccessMessage(false);
+    }, 5000);
+
+    // Reset the form fields
+    setFormData({ name: '', email: '', phone: '', message: '' });
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
-    })
-  }
+    });
+  };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Hero Section */}
-      <div className="bg-gradient-to-r from-blue-600 to-red-600 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <div className="text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              Contact Us
-            </h1>
-            <p className="text-xl text-blue-100 max-w-3xl mx-auto">
-              Get in touch with Bukason Deigason Autos. We're here to help you find your perfect vehicle.
+    <div className="min-h-screen bg-gray-100 font-sans">
+      {/* Success Message Modal */}
+      {showSuccessMessage && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900 bg-opacity-50 transition-opacity duration-300">
+          <div className="bg-white p-8 rounded-lg shadow-2xl max-w-sm w-full transform scale-100 transition-transform duration-300">
+            <div className="flex justify-between items-start mb-4">
+              <h3 className="text-xl font-bold text-gray-900">Message Sent!</h3>
+              <button onClick={() => setShowSuccessMessage(false)} className="text-gray-400 hover:text-gray-600 transition-colors">
+                <XCircle className="w-6 h-6" />
+              </button>
+            </div>
+            <p className="text-gray-600 mb-6">
+              Thank you for your message. We will get back to you as soon as possible.
             </p>
+            <button
+              onClick={() => setShowSuccessMessage(false)}
+              className="w-full bg-red-600 text-white py-3 rounded-lg hover:bg-red-700 transition-colors"
+            >
+              Close
+            </button>
           </div>
+        </div>
+      )}
+
+      {/* Hero Section */}
+      <div className="bg-gradient-to-br from-gray-900 to-gray-700 text-white shadow-lg">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 text-center">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-4 leading-tight">
+            Contact Us
+          </h1>
+          <p className="text-lg sm:text-xl mb-10 text-gray-300 max-w-2xl mx-auto">
+            Get in touch with Bukason Deigason Autos. We're here to help you find your perfect vehicle.
+          </p>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Contact Information */}
-          <div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-8">Get in Touch</h2>
-            
-            <div className="space-y-6">
-              <div className="flex items-start">
-                <div className="bg-red-100 p-3 rounded-lg mr-4">
-                  <Phone className="w-6 h-6 text-red-600" />
+          <div className="space-y-8">
+            <div className="bg-white rounded-xl shadow-lg p-8">
+              <h2 className="text-3xl font-bold text-gray-900 mb-6">Get in Touch</h2>
+              <div className="space-y-6">
+                <div className="flex items-start">
+                  <div className="bg-red-50 p-3 rounded-full mr-4 shadow-inner">
+                    <Phone className="w-6 h-6 text-red-600" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900">Phone</h3>
+                    <p className="text-gray-600">+234 123 456 7890</p>
+                    <p className="text-gray-600">+234 098 765 4321</p>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-1">Phone</h3>
-                  <p className="text-gray-600">+234 123 456 7890</p>
-                  <p className="text-gray-600">+234 098 765 4321</p>
-                </div>
-              </div>
 
-              <div className="flex items-start">
-                <div className="bg-blue-100 p-3 rounded-lg mr-4">
-                  <Mail className="w-6 h-6 text-blue-600" />
+                <div className="flex items-start">
+                  <div className="bg-red-50 p-3 rounded-full mr-4 shadow-inner">
+                    <Mail className="w-6 h-6 text-red-600" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900">Email</h3>
+                    <p className="text-gray-600">info@bukasondeigasonautos.com</p>
+                    <p className="text-gray-600">sales@bukasondeigasonautos.com</p>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-1">Email</h3>
-                  <p className="text-gray-600">info@bukasondeigasonautos.com</p>
-                  <p className="text-gray-600">sales@bukasondeigasonautos.com</p>
-                </div>
-              </div>
 
-              <div className="flex items-start">
-                <div className="bg-red-100 p-3 rounded-lg mr-4">
-                  <MapPin className="w-6 h-6 text-red-600" />
+                <div className="flex items-start">
+                  <div className="bg-red-50 p-3 rounded-full mr-4 shadow-inner">
+                    <MapPin className="w-6 h-6 text-red-600" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900">Address</h3>
+                    <p className="text-gray-600">
+                      123 Auto Plaza Street, Lagos, Nigeria, 100001
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-1">Address</h3>
-                  <p className="text-gray-600">
-                    123 Auto Plaza Street<br />
-                    Lagos, Nigeria<br />
-                    100001
-                  </p>
-                </div>
-              </div>
 
-              <div className="flex items-start">
-                <div className="bg-blue-100 p-3 rounded-lg mr-4">
-                  <Clock className="w-6 h-6 text-blue-600" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-1">Business Hours</h3>
-                  <div className="text-gray-600">
-                    <p>Monday - Friday: 8:00 AM - 6:00 PM</p>
-                    <p>Saturday: 9:00 AM - 4:00 PM</p>
-                    <p>Sunday: Closed</p>
+                <div className="flex items-start">
+                  <div className="bg-red-50 p-3 rounded-full mr-4 shadow-inner">
+                    <Clock className="w-6 h-6 text-red-600" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900">Business Hours</h3>
+                    <p className="text-gray-600">Monday - Friday: 8:00 AM - 6:00 PM</p>
+                    <p className="text-gray-600">Saturday: 9:00 AM - 4:00 PM</p>
+                    <p className="text-gray-600">Sunday: Closed</p>
                   </div>
                 </div>
               </div>
             </div>
 
             {/* Quick Actions */}
-            <div className="mt-8 p-6 bg-gradient-to-r from-blue-50 to-red-50 rounded-lg">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
+            <div className="p-6 bg-white rounded-xl shadow-lg border border-gray-200">
+              <h3 className="text-xl font-bold text-gray-900 mb-4">Quick Actions</h3>
               <div className="space-y-3">
                 <button
                   onClick={() => window.open('tel:+2341234567890')}
-                  className="w-full bg-red-600 text-white py-3 px-4 rounded-lg hover:bg-red-700 transition-colors font-medium flex items-center justify-center"
+                  className="w-full bg-red-600 text-white py-3 px-4 rounded-lg shadow-md hover:bg-red-700 transition duration-300 ease-in-out transform hover:scale-105 font-medium flex items-center justify-center"
                 >
                   <Phone className="w-4 h-4 mr-2" />
                   Call for Inspection
                 </button>
                 <button
                   onClick={() => window.open('mailto:info@bukasondeigasonautos.com')}
-                  className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors font-medium flex items-center justify-center"
+                  className="w-full bg-gray-700 text-white py-3 px-4 rounded-lg shadow-md hover:bg-gray-800 transition duration-300 ease-in-out font-medium flex items-center justify-center"
                 >
                   <Mail className="w-4 h-4 mr-2" />
                   Send Email
@@ -120,12 +150,11 @@ export const ContactView: React.FC = () => {
           </div>
 
           {/* Contact Form */}
-          <div className="bg-white rounded-lg shadow-lg p-8">
+          <div className="bg-white rounded-xl shadow-lg p-8 h-full">
             <h2 className="text-2xl font-bold text-gray-900 mb-6">Send us a Message</h2>
-            
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="name" className="block text-sm font-semibold text-gray-700 mb-2">
                   Full Name *
                 </label>
                 <input
@@ -135,13 +164,13 @@ export const ContactView: React.FC = () => {
                   required
                   value={formData.name}
                   onChange={handleChange}
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                  className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-red-500 focus:border-transparent transition duration-200"
                   placeholder="Your full name"
                 />
               </div>
 
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
                   Email Address *
                 </label>
                 <input
@@ -151,13 +180,13 @@ export const ContactView: React.FC = () => {
                   required
                   value={formData.email}
                   onChange={handleChange}
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                  className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-red-500 focus:border-transparent transition duration-200"
                   placeholder="your.email@example.com"
                 />
               </div>
 
               <div>
-                <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="phone" className="block text-sm font-semibold text-gray-700 mb-2">
                   Phone Number
                 </label>
                 <input
@@ -166,13 +195,13 @@ export const ContactView: React.FC = () => {
                   name="phone"
                   value={formData.phone}
                   onChange={handleChange}
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                  className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-red-500 focus:border-transparent transition duration-200"
                   placeholder="+234 123 456 7890"
                 />
               </div>
 
               <div>
-                <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="message" className="block text-sm font-semibold text-gray-700 mb-2">
                   Message *
                 </label>
                 <textarea
@@ -182,14 +211,14 @@ export const ContactView: React.FC = () => {
                   rows={5}
                   value={formData.message}
                   onChange={handleChange}
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                  className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-red-500 focus:border-transparent transition duration-200"
                   placeholder="Tell us about the car you're looking for or any questions you have..."
                 />
               </div>
 
               <button
                 type="submit"
-                className="w-full bg-red-600 text-white py-3 px-4 rounded-lg hover:bg-red-700 transition-colors font-medium flex items-center justify-center"
+                className="w-full bg-red-600 text-white py-3 px-4 rounded-lg shadow-md hover:bg-red-700 transition duration-300 ease-in-out font-medium flex items-center justify-center transform hover:scale-105"
               >
                 <Send className="w-4 h-4 mr-2" />
                 Send Message
@@ -199,5 +228,5 @@ export const ContactView: React.FC = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
