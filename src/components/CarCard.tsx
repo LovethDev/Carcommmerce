@@ -126,16 +126,15 @@ export const CarCard: React.FC<CarCardProps> = ({ car }) => {
 
 
   return (
-    // Added mb-4 for vertical space between cards when stacked on mobile
-    // Added px-2 to introduce horizontal padding, giving space from screen edges
-    <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 mx-auto max-w-sm mb-4 px-2">
-      <div className="relative aspect-w-16 aspect-h-9 bg-gray-200">
+    <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 mx-auto max-w-sm mb-4">
+      {/* Removed aspect-w/h classes here and set a fixed height for the container */}
+      <div className="relative w-full h-48 bg-gray-200">
         {images.length > 0 ? (
           <>
             <img
               src={images[currentImageIndex]}
               alt={`${car.brand} ${car.model} - Image ${currentImageIndex + 1}`}
-              className="w-full h-48 object-cover cursor-pointer"
+              className="w-full h-full object-cover cursor-pointer rounded-t-xl" // Ensure it covers and is contained
               onClick={handleImageClick}
             />
 
@@ -175,7 +174,7 @@ export const CarCard: React.FC<CarCardProps> = ({ car }) => {
             )}
           </>
         ) : (
-          <div className="w-full h-48 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+          <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center rounded-t-xl">
             <div className="text-center">
               <div className="w-12 h-12 bg-gray-300 rounded-full mx-auto mb-1 flex items-center justify-center">
                 <span className="text-xl text-gray-500">🚗</span>
@@ -206,7 +205,7 @@ export const CarCard: React.FC<CarCardProps> = ({ car }) => {
 
         {car.description && (
           <div className="mb-3">
-            <p className="text-gray-600 text-xs whitespace-pre-line"> {/* Added whitespace-pre-line */}
+            <p className="text-gray-600 text-xs whitespace-pre-line">
               {displayDescription}
             </p>
             {shouldShowViewMore && (
