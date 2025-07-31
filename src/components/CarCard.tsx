@@ -117,115 +117,111 @@ export const CarCard: React.FC<CarCardProps> = ({ car }) => {
   }
 
   return (
-    <>
-      <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 mx-auto max-w-sm">
-        <div className="relative aspect-w-16 aspect-h-9 bg-gray-200">
-          {images.length > 0 ? (
-            <>
-              <img
-                src={images[currentImageIndex]}
-                alt={`${car.brand} ${car.model} - Image ${currentImageIndex + 1}`}
-                className="w-full h-48 object-cover cursor-pointer"
-                onClick={handleImageClick}
-              />
+    // Added mb-4 for vertical space between cards when stacked on mobile
+    <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 mx-auto max-w-sm mb-4">
+      <div className="relative aspect-w-16 aspect-h-9 bg-gray-200">
+        {images.length > 0 ? (
+          <>
+            <img
+              src={images[currentImageIndex]}
+              alt={`${car.brand} ${car.model} - Image ${currentImageIndex + 1}`}
+              className="w-full h-48 object-cover cursor-pointer"
+              onClick={handleImageClick}
+            />
 
-              {images.length > 1 && (
-                <>
-                  <button
-                    onClick={prevImage}
-                    className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-1 rounded-full hover:bg-opacity-70 transition-opacity"
-                  >
-                    <ChevronLeft className="w-4 h-4" />
-                  </button>
-                  <button
-                    onClick={nextImage}
-                    className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-1 rounded-full hover:bg-opacity-70 transition-opacity"
-                  >
-                    <ChevronRight className="w-4 h-4" />
-                  </button>
+            {images.length > 1 && (
+              <>
+                <button
+                  onClick={prevImage}
+                  className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-1 rounded-full hover:bg-opacity-70 transition-opacity"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={nextImage}
+                  className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-1 rounded-full hover:bg-opacity-70 transition-opacity"
+                >
+                  <ChevronRight className="w-4 h-4" />
+                </button>
 
-                  {/* Image indicators */}
-                  <div className="absolute bottom-1.5 left-1/2 transform -translate-x-1/2 flex space-x-1">
-                    {images.map((_, index) => (
-                      <button
-                        key={index}
-                        onClick={() => setCurrentImageIndex(index)}
-                        className={`w-1.5 h-1.5 rounded-full transition-colors ${
-                          index === currentImageIndex ? 'bg-white' : 'bg-white bg-opacity-50'
-                        }`}
-                      />
-                    ))}
-                  </div>
-
-                  {/* Click to expand hint */}
-                  <div className="absolute top-2 right-2 bg-black bg-opacity-50 text-white text-xs px-1.5 py-0.5 rounded">
-                    Click to expand
-                  </div>
-                </>
-              )}
-            </>
-          ) : (
-            <div className="w-full h-48 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
-              <div className="text-center">
-                <div className="w-12 h-12 bg-gray-300 rounded-full mx-auto mb-1 flex items-center justify-center">
-                  <span className="text-xl text-gray-500">🚗</span>
+                {/* Image indicators */}
+                <div className="absolute bottom-1.5 left-1/2 transform -translate-x-1/2 flex space-x-1">
+                  {images.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setCurrentImageIndex(index)}
+                      className={`w-1.5 h-1.5 rounded-full transition-colors ${
+                        index === currentImageIndex ? 'bg-white' : 'bg-white bg-opacity-50'
+                      }`}
+                    />
+                  ))}
                 </div>
-                <p className="text-gray-500 text-xs">No Image</p>
-              </div>
-            </div>
-          )}
-        </div>
 
-        <div className="p-4">
-          <div className="flex items-start justify-between mb-2">
-            <div className="flex-1 pr-2"> {/* Added padding-right to create space */}
-              <h3 className="text-lg font-bold text-gray-900 mb-0.5 leading-tight">
-                {car.brand} {car.model}
-              </h3>
-              <div className="flex items-center text-gray-600">
-                <Calendar className="w-3.5 h-3.5 mr-1" />
-                <span className="text-xs">{car.year}</span>
+                {/* Click to expand hint */}
+                <div className="absolute top-2 right-2 bg-black bg-opacity-50 text-white text-xs px-1.5 py-0.5 rounded">
+                  Click to expand
+                </div>
+              </>
+            )}
+          </>
+        ) : (
+          <div className="w-full h-48 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+            <div className="text-center">
+              <div className="w-12 h-12 bg-gray-300 rounded-full mx-auto mb-1 flex items-center justify-center">
+                <span className="text-xl text-gray-500">🚗</span>
               </div>
-            </div>
-            <div className="text-right flex-shrink-0">
-              <div className="text-green-500 font-bold text-base leading-tight"> {/* Increased font size for price */}
-                {formatPrice(car.price)}
-              </div>
+              <p className="text-gray-500 text-xs">No Image</p>
             </div>
           </div>
+        )}
+      </div>
 
-          {car.description && (
-            <div className="mb-3"> {/* Added margin-bottom */}
-              <p
-                className={`text-gray-600 text-xs ${
-                  showFullDescription ? '' : 'line-clamp-3'
-                }`}
-              >
-                {car.description}
-              </p>
-              {(car.description.split('\n').length > 3 || car.description.length > 150) && (
-                <button
-                  onClick={() => setShowFullDescription(!showFullDescription)}
-                  className="text-blue-600 text-xs hover:underline mt-1 block"
-                >
-                  {showFullDescription ? 'View Less' : 'View More'}
-                </button>
-              )}
+      <div className="p-4">
+        <div className="flex items-start justify-between mb-2">
+          <div className="flex-1 pr-2">
+            <h3 className="text-lg font-bold text-gray-900 mb-0.5 leading-tight">
+              {car.brand} {car.model}
+            </h3>
+            <div className="flex items-center text-gray-600">
+              <Calendar className="w-3.5 h-3.5 mr-1" />
+              <span className="text-xs">{car.year}</span>
             </div>
-          )}
-
-          <button
-            onClick={handleCallInspection}
-            className="w-12 h-12 bg-red-600 text-white rounded-full flex items-center justify-center hover:bg-red-700 transition-colors shadow-md mx-auto" // Centered and made it a circle
-            aria-label="Call for Inspection"
-          >
-            <Phone className="w-6 h-6" /> {/* Increased icon size for better tap target */}
-          </button>
+          </div>
+          <div className="text-right flex-shrink-0">
+            <div className="text-green-500 font-bold text-base leading-tight">
+              {formatPrice(car.price)}
+            </div>
+          </div>
         </div>
+
+        {car.description && (
+          <div className="mb-3">
+            <p className="text-gray-600 text-xs">
+              {showFullDescription ? car.description : car.description.split('\n')[0]}
+              {/* Display first line or full description */}
+            </p>
+            {car.description.split('\n').length > 1 || car.description.length > 50 ? ( // Adjusted threshold for "View More"
+              <button
+                onClick={() => setShowFullDescription(!showFullDescription)}
+                className="text-blue-600 text-xs hover:underline mt-1 block"
+              >
+                {showFullDescription ? 'View Less' : 'View More'}
+              </button>
+            ) : null}
+          </div>
+        )}
+
+        <button
+          onClick={handleCallInspection}
+          className="w-12 h-12 bg-red-600 text-white rounded-full flex items-center justify-center hover:bg-red-700 transition-colors shadow-md mx-auto"
+          aria-label="Call for Inspection"
+        >
+          <Phone className="w-6 h-6" />
+        </button>
       </div>
 
       {/* Image Modal */}
       <ImageModal />
-    </>
+    </div>
   )
 }
