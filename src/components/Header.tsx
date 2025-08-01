@@ -99,7 +99,7 @@ export const Header: React.FC = () => {
 
       {/* Mobile Menu (Plain Tailwind CSS) */}
       {isMobileMenuOpen && (
-        <div className="md:hidden fixed inset-0 z-50 bg-gray-400 bg-opacity-95 backdrop-blur-sm flex flex-col items-start p-6 animate-fadeInLeft">
+        <div className="md:hidden fixed inset-0 z-50 bg-gray-900 bg-opacity-95 backdrop-blur-sm flex flex-col items-start p-6 animate-fadeInLeft">
           <div className="flex justify-between items-center w-full mb-8 animate-fadeInUp">
             <Link to="/" className="text-xl font-bold text-white flex items-center gap-2" onClick={handleCloseMobileMenu}>
               <Car className="h-7 w-7 text-red-500 animate-float" /> BDA
@@ -111,7 +111,7 @@ export const Header: React.FC = () => {
               <X className="h-6 w-6" aria-label="Close menu" />
             </button>
           </div>
-          <nav className="flex flex-col space-y-4 w-full animate-fadeInUp animate-delay-200">
+          <nav className="flex flex-col space-y-4 w-full animate-fadeInUp animate-delay-200 bg-red-200">
             <Link
               to="/"
               onClick={handleCloseMobileMenu}
