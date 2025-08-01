@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect, useCallback } from 'react';
-import { Filter, Search } from 'lucide-react';
+import { Search } from 'lucide-react';
 import { CarCard } from './CarCard';
-import { FilterSidebar } from './FilterSidebar';
+// FilterSidebar import removed
 import { useCars } from '../hooks/useCars'; // Assuming this hook exists and fetches all cars
 import type { Car } from '../lib/supabase'; // Assuming this type exists
 
@@ -59,54 +59,21 @@ const Footer: React.FC = () => {
 export const PublicView: React.FC = () => {
   const { cars, loading, error } = useCars();
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedBrand, setSelectedBrand] = useState('');
-
-  const MAX_POSSIBLE_PRICE = 2_000_000_000_000;
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, MAX_POSSIBLE_PRICE]);
-  const [yearRange, setYearRange] = useState<[number, number]>([1990, new Date().getFullYear()]);
-  const [sortBy, setSortBy] = useState('newest');
-  const [showFilters, setShowFilters] = useState(false);
 
   // State for infinite scroll
   const [carsToShow, setCarsToShow] = useState(12);
   const carsPerLoad = 12;
 
-  const brands = useMemo(() => {
-    const uniqueBrands = [...new Set(cars.map(car => car.brand))];
-    return uniqueBrands.sort();
-  }, [cars]);
-
   const filteredCars = useMemo(() => {
-    let filtered = cars.filter(car => {
-      const carPrice = Number(car.price);
-      if (isNaN(carPrice)) return false;
-
-      const matchesSearch =
-        car.model.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    const filtered = cars.filter(car => {
+      return car.model.toLowerCase().includes(searchTerm.toLowerCase()) ||
         car.brand.toLowerCase().includes(searchTerm.toLowerCase()) ||
         car.year.toString().includes(searchTerm);
-
-      const matchesBrand = !selectedBrand || car.brand === selectedBrand;
-      const matchesPrice = carPrice >= priceRange[0] && carPrice <= priceRange[1];
-      const matchesYear = car.year >= yearRange[0] && car.year <= yearRange[1];
-
-      return matchesSearch && matchesBrand && matchesPrice && matchesYear;
     });
 
-    switch (sortBy) {
-      case 'price-low':
-        return filtered.sort((a, b) => Number(a.price) - Number(b.price));
-      case 'price-high':
-        return filtered.sort((a, b) => Number(b.price) - Number(a.price));
-      case 'year-new':
-        return filtered.sort((a, b) => b.year - a.year);
-      case 'year-old':
-        return filtered.sort((a, b) => a.year - b.year);
-      case 'newest':
-      default:
-        return filtered.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
-    }
-  }, [cars, searchTerm, selectedBrand, priceRange, yearRange, sortBy]);
+    // Default sort by newest cars
+    return filtered.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+  }, [cars, searchTerm]);
 
   // Infinite scroll logic
   const handleScroll = useCallback(() => {
@@ -123,10 +90,10 @@ export const PublicView: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [handleScroll]);
 
-  // Reset carsToShow when filters change
+  // Reset carsToShow when search term changes
   useEffect(() => {
     setCarsToShow(carsPerLoad);
-  }, [searchTerm, selectedBrand, priceRange, yearRange, sortBy, cars]);
+  }, [searchTerm, cars]);
 
   if (loading) {
     return (
@@ -182,30 +149,10 @@ export const PublicView: React.FC = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 animate-fadeInUp animate-delay-500">
-        {/*
-          **MODIFICATION**: The FilterSidebar is now outside the flex container below.
-          This prevents it from taking up space in the document flow on mobile.
-          Its own internal styling should handle its positioning for both mobile (overlay)
-          and desktop (static block).
-        */}
-        <FilterSidebar
-          isOpen={showFilters}
-          onClose={() => setShowFilters(false)}
-          brands={brands}
-          selectedBrand={selectedBrand}
-          onBrandChange={setSelectedBrand}
-          priceRange={priceRange}
-          onPriceRangeChange={setPriceRange}
-          yearRange={yearRange}
-          onYearRangeChange={setYearRange}
-          sortBy={sortBy}
-          onSortChange={setSortBy}
-        />
-
-        <div className="flex flex-col lg:flex-row gap-10">
+        <div className="flex flex-col gap-10">
           {/* Main Content */}
           <div className="flex-1">
-            {/* Results Header and Filter Button for Mobile */}
+            {/* Results Header */}
             <div className="flex justify-between items-center mb-8 animate-fadeInLeft">
               <div className="animate-fadeInLeft animate-delay-100">
                 <h2 className="text-3xl font-bold text-gray-900">Available Cars</h2>
@@ -213,14 +160,7 @@ export const PublicView: React.FC = () => {
                   {filteredCars.length} car{filteredCars.length !== 1 ? 's' : ''} found
                 </p>
               </div>
-
-              <button
-                onClick={() => setShowFilters(true)}
-                className="lg:hidden flex items-center bg-red-600 text-white px-5 py-3 rounded-full shadow-md hover:bg-red-700 transition-all duration-300 ease-in-out transform hover:scale-105 animate-fadeInRight animate-delay-200 hover-lift"
-              >
-                <Filter className="w-5 h-5 mr-2" />
-                Filters
-              </button>
+              {/* Filter button removed */}
             </div>
 
             {/* Car Grid */}
@@ -231,23 +171,19 @@ export const PublicView: React.FC = () => {
                 </div>
                 <h3 className="text-2xl font-bold text-gray-900 mb-3">No cars found</h3>
                 <p className="text-gray-600 text-lg mb-6 max-w-md mx-auto">
-                  It seems there are no cars matching your current search criteria or filters.
+                  It seems there are no cars matching your current search criteria.
                 </p>
                 <button
                   onClick={() => {
                     setSearchTerm('');
-                    setSelectedBrand('');
-                    setPriceRange([0, MAX_POSSIBLE_PRICE]);
-                    setYearRange([1990, new Date().getFullYear()]);
-                    setSortBy('newest');
                   }}
                   className="bg-gray-700 text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-all duration-300 ease-in-out shadow-md hover:scale-105 hover-lift"
                 >
-                  Clear All Filters
+                  Clear Search
                 </button>
               </div>
             ) : (
-              <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 animate-fadeInUp animate-delay-300">
+              <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8 animate-fadeInUp animate-delay-300">
                 {filteredCars.slice(0, carsToShow).map((car) => (
                   <CarCard key={car.id} car={car} />
                 ))}
