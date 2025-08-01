@@ -152,10 +152,7 @@ export const Header: React.FC = () => {
             <Link
               to="/admin"
               onClick={handleCloseMobileMenu}
-              className="flex items-center justify-center w-full bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-4 py-3 text-lg font-semibold shadow-md transition-all duration-300 ease-in-out mt-6"
-            >
-              <LogIn className="h-5 w-5 mr-2" />
-              Admin Login
+             
             </Link>
           </nav>
         </div>
