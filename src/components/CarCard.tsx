@@ -187,7 +187,7 @@ export const CarCard: React.FC<CarCardProps> = ({ car }) => {
       <div className="p-2 animate-fadeInUp animate-delay-200">
         <div className="flex items-start justify-between mb-1">
           <div className="flex-1 pr-1">
-            <h3 className="text-sm font-bold text-gray-900 mb-0.5 leading-tight">
+            <h3 className="text-xs font-bold text-gray-900 mb-0.5 leading-tight">
               {car.brand} {car.model}
             </h3>
             <div className="flex items-center text-gray-600">
