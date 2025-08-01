@@ -138,7 +138,8 @@ export const CarCard: React.FC<CarCardProps> = ({ car }) => {
   const shouldShowViewMore = descriptionLines.length > 2 || (car.description && car.description.length > 100);
 
   return (
-    <div className="bg-white rounded-md shadow-sm overflow-hidden hover:shadow-lg transition-all duration-300 max-w-[18rem] m-2 hover-lift animate-scaleIn">
+    // Increased max-w from [18rem] to [20rem]
+    <div className="bg-white rounded-md shadow-sm overflow-hidden hover:shadow-lg transition-all duration-300 max-w-[20rem] m-2 hover-lift animate-scaleIn">
       <div className="relative w-full h-32 bg-gray-200">
         {images.length > 0 ? (
           <>
@@ -212,7 +213,8 @@ export const CarCard: React.FC<CarCardProps> = ({ car }) => {
             </div>
           </div>
           <div className="text-right flex-shrink-0">
-            <div className="text-green-500 font-bold text-sm leading-tight">
+            {/* Reduced price font from text-sm to text-xs */}
+            <div className="text-green-500 font-bold text-xs leading-tight">
               {formatPrice(car.price)}
             </div>
           </div>
