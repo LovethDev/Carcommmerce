@@ -96,8 +96,8 @@ export const ContactView: React.FC = () => {
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold text-gray-900">Email</h3>
-                    <p className="text-gray-600">info@bukasondeigasonautos.com</p>
-                    <p className="text-gray-600">sales@bukasondeigasonautos.com</p>
+                    <p className="text-gray-600">Bukasondeigaautos@gmail.com</p>
+                    
                   </div>
                 </div>
 
