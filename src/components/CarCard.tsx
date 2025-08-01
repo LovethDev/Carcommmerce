@@ -138,14 +138,14 @@ export const CarCard: React.FC<CarCardProps> = ({ car }) => {
   const shouldShowViewMore = descriptionLines.length > 2 || (car.description && car.description.length > 100);
 
   return (
-    <div className="bg-white rounded-md shadow-sm overflow-hidden hover:shadow-lg transition-all duration-300 mx-auto max-w-[18rem] mb-2 hover-lift animate-scaleIn">
+    <div className="bg-white rounded-md shadow-sm overflow-hidden hover:shadow-lg transition-all duration-300 max-w-[18rem] m-2 hover-lift animate-scaleIn">
       <div className="relative w-full h-32 bg-gray-200">
         {images.length > 0 ? (
           <>
             <img
               src={images?.[currentImageIndex]}
               alt={`${car.brand} ${car.model} - Image ${currentImageIndex + 1}`}
-              className="w-7 h-full object-cover cursor-pointer rounded-t-md transition-transform duration-300 hover:scale-105"
+              className="w-full h-full object-cover cursor-pointer rounded-t-md transition-transform duration-300 hover:scale-105"
               onClick={handleImageClick}
               onError={(e) => { e.currentTarget.src = 'https://via.placeholder.com/150?text=Image+Error'; e.currentTarget.alt = "Image not available"; }}
             />
