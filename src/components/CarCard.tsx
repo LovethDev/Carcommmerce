@@ -11,20 +11,21 @@ export const CarCard: React.FC<CarCardProps> = ({ car }) => {
   const [showImageModal, setShowImageModal] = useState(false);
   const [showFullDescription, setShowFullDescription] = useState(false);
 
-  // Memoize all available images to avoid recalculation on every render
+  // Combine and memoize all available images
   const images = React.useMemo(() => {
     const imageList: string[] = [];
-    if (car.image_url && !imageList.includes(car.image_url)) {
+    if (car.image_url) {
       imageList.push(car.image_url);
     }
     if (Array.isArray(car.image_urls)) {
       car.image_urls.forEach(url => {
-        if (url && typeof url === 'string' && url.trim() !== '' && !imageList.includes(url)) {
+        if (url && typeof url === 'string' && url.trim() !== '') {
           imageList.push(url);
         }
       });
     }
-    return imageList;
+    // Filter out duplicates
+    return Array.from(new Set(imageList));
   }, [car.image_url, car.image_urls]);
 
   const nextImage = () => {
@@ -54,18 +55,16 @@ export const CarCard: React.FC<CarCardProps> = ({ car }) => {
     if (price === null || price === undefined || isNaN(price) || price < 0) {
       return '₦0';
     }
-
     const formattedNumber = price.toLocaleString('en-NG', {
       minimumFractionDigits: 0,
       maximumFractionDigits: 0
     });
-
     return `₦${formattedNumber}`;
   };
 
   // Image Modal Component
   const ImageModal = () => {
-    if (!showImageModal) return null;
+    if (!showImageModal || images.length === 0) return null;
 
     return (
       <div className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-2">
@@ -77,15 +76,11 @@ export const CarCard: React.FC<CarCardProps> = ({ car }) => {
           >
             <X className="w-4 h-4" />
           </button>
-
-          {images.length > 0 && (
-             <img
-               src={images?.[currentImageIndex]}
-               alt={`${car.brand} ${car.model} - Image ${currentImageIndex + 1}`}
-               className="max-w-full max-h-[70vh] object-contain rounded-md"
-             />
-          )}
-
+          <img
+            src={images[currentImageIndex]}
+            alt={`${car.brand} ${car.model} - Image ${currentImageIndex + 1}`}
+            className="max-w-full max-h-[70vh] object-contain rounded-md"
+          />
           {images.length > 1 && (
             <>
               <button
@@ -102,13 +97,9 @@ export const CarCard: React.FC<CarCardProps> = ({ car }) => {
               >
                 <ChevronRight className="w-4 h-4" />
               </button>
-
-              {/* Image counter */}
               <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 text-white bg-black bg-opacity-50 px-1 py-0.5 rounded-full text-xs">
                 {currentImageIndex + 1} / {images.length}
               </div>
-
-              {/* Image indicators */}
               <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-1">
                 {images.map((_, index) => (
                   <button
@@ -128,29 +119,25 @@ export const CarCard: React.FC<CarCardProps> = ({ car }) => {
     );
   };
 
-  // Get description lines and determine display
+  // Description logic: show max 4 lines
   const descriptionLines = car.description ? car.description.split('\n').filter(line => line.trim() !== '') : [];
   const displayDescription = showFullDescription
     ? car.description
-    : descriptionLines.slice(0, 2).join('\n');
-
-  // Condition for showing "View More" button
-  const shouldShowViewMore = descriptionLines.length > 2 || (car.description && car.description.length > 100);
+    : descriptionLines.slice(0, 4).join('\n');
+  const shouldShowViewMore = descriptionLines.length > 4 || (car.description && car.description.length > 200);
 
   return (
-    // Increased max-w from [18rem] to [20rem]
     <div className="bg-white rounded-md shadow-sm overflow-hidden hover:shadow-lg transition-all duration-300 max-w-[20rem] m-2 hover-lift animate-scaleIn">
       <div className="relative w-full h-32 bg-gray-200">
         {images.length > 0 ? (
           <>
             <img
-              src={images?.[currentImageIndex]}
+              src={images[currentImageIndex]}
               alt={`${car.brand} ${car.model} - Image ${currentImageIndex + 1}`}
               className="w-full h-full object-cover cursor-pointer rounded-t-md transition-transform duration-300 hover:scale-105"
               onClick={handleImageClick}
               onError={(e) => { e.currentTarget.src = 'https://via.placeholder.com/150?text=Image+Error'; e.currentTarget.alt = "Image not available"; }}
             />
-
             {images.length > 1 && (
               <>
                 <button
@@ -167,8 +154,6 @@ export const CarCard: React.FC<CarCardProps> = ({ car }) => {
                 >
                   <ChevronRight className="w-3 h-3" />
                 </button>
-
-                {/* Image indicators */}
                 <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 flex space-x-0.5">
                   {images.map((_, index) => (
                     <button
@@ -181,8 +166,6 @@ export const CarCard: React.FC<CarCardProps> = ({ car }) => {
                     />
                   ))}
                 </div>
-
-                {/* Click to expand hint */}
                 <div className="absolute top-1 right-1 bg-black bg-opacity-50 text-white text-[0.5rem] px-1 py-0.5 rounded animate-fadeInRight">
                   Click to expand
                 </div>
@@ -213,7 +196,6 @@ export const CarCard: React.FC<CarCardProps> = ({ car }) => {
             </div>
           </div>
           <div className="text-right flex-shrink-0">
-            {/* Reduced price font from text-sm to text-xs */}
             <div className="text-green-500 font-bold text-xs leading-tight">
               {formatPrice(car.price)}
             </div>
