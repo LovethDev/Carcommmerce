@@ -14,6 +14,11 @@ export const Header: React.FC = () => {
     setIsMobileMenuOpen(false);
   };
 
+  // Define nav link styles for reuse
+  const navLinkBaseClasses = "relative text-sm font-semibold transition-colors duration-300 ease-in-out hover:text-red-400";
+  const navLinkActiveClasses = "text-red-500 after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-[2px] after:bg-red-500";
+  const navLinkInactiveClasses = "text-gray-300";
+
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-gray-900 to-gray-800 shadow-lg border-b border-gray-700 font-inter animate-slideInDown backdrop-blur-sm bg-opacity-95">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -31,54 +36,45 @@ export const Header: React.FC = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-6 animate-fadeInRight">
-            <Link
-              to="/"
-              className={`relative px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 ease-in-out transform hover:scale-105
-                ${isActive('/')
-                  ? 'bg-red-600 text-white shadow-md'
-                  : 'text-gray-300 hover:text-white hover:bg-gray-700/50'
-                }
-                before:absolute before:inset-0 before:rounded-full before:border-2 before:border-transparent before:transition-all before:duration-300 before:ease-in-out
-                ${isActive('/') ? 'before:border-red-500' : 'hover:before:border-gray-600'}
-              `}
-            >
-              Browse Cars
-            </Link>
-            <Link
-              to="/about"
-              className={`relative px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 ease-in-out transform hover:scale-105
-                ${isActive('/about')
-                  ? 'bg-red-600 text-white shadow-md'
-                  : 'text-gray-300 hover:text-white hover:bg-gray-700/50'
-                }
-                before:absolute before:inset-0 before:rounded-full before:border-2 before:border-transparent before:transition-all before:duration-300 before:ease-in-out
-                ${isActive('/about') ? 'before:border-red-500' : 'hover:before:border-gray-600'}
-              `}
-            >
-              About Us
-            </Link>
-            <Link
-              to="/contact"
-              className={`relative px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 ease-in-out transform hover:scale-105
-                ${isActive('/contact')
-                  ? 'bg-red-600 text-white shadow-md'
-                  : 'text-gray-300 hover:text-white hover:bg-gray-700/50'
-                }
-                before:absolute before:inset-0 before:rounded-full before:border-2 before:border-transparent before:transition-all before:duration-300 before:ease-in-out
-                ${isActive('/contact') ? 'before:border-red-500' : 'hover:before:border-gray-600'}
-              `}
-            >
-              Contact
-            </Link>
+          <div className="hidden md:flex items-center space-x-8 animate-fadeInRight">
+             <nav>
+                <ul className="flex items-center space-x-6">
+                    <li>
+                        <Link
+                            to="/"
+                            className={`${navLinkBaseClasses} ${isActive('/') ? navLinkActiveClasses : navLinkInactiveClasses}`}
+                        >
+                            Browse Cars
+                        </Link>
+                    </li>
+                    <li>
+                        <Link
+                            to="/about"
+                            className={`${navLinkBaseClasses} ${isActive('/about') ? navLinkActiveClasses : navLinkInactiveClasses}`}
+                        >
+                            About Us
+                        </Link>
+                    </li>
+                    <li>
+                        <Link
+                            to="/contact"
+                            className={`${navLinkBaseClasses} ${isActive('/contact') ? navLinkActiveClasses : navLinkInactiveClasses}`}
+                        >
+                            Contact
+                        </Link>
+                    </li>
+                </ul>
+             </nav>
             {/* Admin Login Button - Desktop */}
             <Link
               to="/admin"
-            
+              className="flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-red-700 transition-all duration-300 ease-in-out transform hover:scale-105 shadow-md"
             >
-         
+                <LogIn className="h-4 w-4" />
+                Admin Login
             </Link>
-          </nav>
+          </div>
+
 
           {/* Mobile Menu Button */}
           <div className="md:hidden flex items-center animate-fadeInRight">
@@ -111,14 +107,14 @@ export const Header: React.FC = () => {
               <X className="h-6 w-6" aria-label="Close menu" />
             </button>
           </div>
-          <nav className="flex flex-col space-y-4 w-full animate-fadeInUp animate-delay-200 bg-red-700">
+          <nav className="flex flex-col space-y-4 w-full animate-fadeInUp animate-delay-200">
             <Link
               to="/"
               onClick={handleCloseMobileMenu}
               className={`block w-full text-left px-4 py-3 rounded-lg text-lg font-medium transition-all duration-300 hover:scale-105 hover-lift
                 ${isActive('/')
-                  ? ' text-white shadow-md'
-                  : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                  ? 'bg-red-600 text-white shadow-md'
+                  : 'text-gray-300 hover:bg-gray-800 hover:text-white'
                 }
               `}
             >
@@ -127,10 +123,10 @@ export const Header: React.FC = () => {
             <Link
               to="/about"
               onClick={handleCloseMobileMenu}
-              className={`block w-full text-gray-500 text-left px-4 py-3 rounded-lg text-lg font-medium transition-all duration-300 hover:scale-105 hover-lift 
+              className={`block w-full text-left px-4 py-3 rounded-lg text-lg font-medium transition-all duration-300 hover:scale-105 hover-lift
                 ${isActive('/about')
-                  ? 'bg-red-700 text-white shadow-md'
-                  : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                  ? 'bg-red-600 text-white shadow-md'
+                  : 'text-gray-300 hover:bg-gray-800 hover:text-white'
                 }
               `}
             >
@@ -141,8 +137,8 @@ export const Header: React.FC = () => {
               onClick={handleCloseMobileMenu}
               className={`block w-full text-left px-4 py-3 rounded-lg text-lg font-medium transition-all duration-300 hover:scale-105 hover-lift
                 ${isActive('/contact')
-                  ? ' text-white shadow-md'
-                  : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                  ? 'bg-red-600 text-white shadow-md'
+                  : 'text-gray-300 hover:bg-gray-800 hover:text-white'
                 }
               `}
             >
@@ -152,8 +148,9 @@ export const Header: React.FC = () => {
             <Link
               to="/admin"
               onClick={handleCloseMobileMenu}
-              className="transition-all duration-300 hover:scale-105">
-             
+              className="mt-4 flex items-center justify-center gap-2 bg-red-600 text-white px-4 py-3 rounded-lg text-lg font-semibold hover:bg-red-700 transition-all duration-300 ease-in-out transform hover:scale-105 shadow-md">
+                 <LogIn className="h-5 w-5" />
+                 Admin Login
             </Link>
           </nav>
         </div>
