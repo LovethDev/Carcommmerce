@@ -111,7 +111,7 @@ export const Header: React.FC = () => {
               <X className="h-6 w-6" aria-label="Close menu" />
             </button>
           </div>
-          <nav className="flex flex-col space-y-4 w-full animate-fadeInUp animate-delay-200 bg-red-200">
+          <nav className="flex flex-col space-y-4 w-full animate-fadeInUp animate-delay-200 bg-red-700">
             <Link
               to="/"
               onClick={handleCloseMobileMenu}
