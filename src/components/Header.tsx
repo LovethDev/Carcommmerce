@@ -151,7 +151,7 @@ export const Header: React.FC = () => {
             {/* Admin Login Button - Mobile */}
             <Link
               to="/admin"
-              onClick={handleCloseMobileMenu}
+             
              
             </Link>
           </nav>
