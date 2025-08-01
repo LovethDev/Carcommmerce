@@ -123,7 +123,7 @@ export const CarCard: React.FC<CarCardProps> = ({ car }) => {
   const descriptionLines = car.description ? car.description.split('\n').filter(line => line.trim() !== '') : [];
   const displayDescription = showFullDescription
     ? car.description
-    : descriptionLines.slice(0, 4).join('\n');
+    : descriptionLines.slice(0, 2).join('\n');
   const shouldShowViewMore = descriptionLines.length > 4 || (car.description && car.description.length > 200);
 
   return (
