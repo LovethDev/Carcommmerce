@@ -111,13 +111,13 @@ export const Header: React.FC = () => {
               <X className="h-6 w-6" aria-label="Close menu" />
             </button>
           </div>
-          <nav className="flex flex-col space-y-4 w-full animate-fadeInUp animate-delay-200 bg-red-400">
+          <nav className="flex flex-col space-y-4 w-full animate-fadeInUp animate-delay-200 bg-red-200">
             <Link
               to="/"
               onClick={handleCloseMobileMenu}
               className={`block w-full text-left px-4 py-3 rounded-lg text-lg font-medium transition-all duration-300 hover:scale-105 hover-lift
                 ${isActive('/')
-                  ? 'bg-red-700 text-white shadow-md'
+                  ? ' text-white shadow-md'
                   : 'text-gray-300 hover:bg-gray-700 hover:text-white'
                 }
               `}
