@@ -118,14 +118,11 @@ export const CarCard: React.FC<CarCardProps> = ({ car }) => {
       </div>
     );
   };
-
-  // Description logic: show max 2 lines
-  const descriptionLines = car.description ? car.description.split('\n').filter(line => line.trim() !== '') : [];
-  const displayDescription = showFullDescription
-    ? car.description
-    : descriptionLines.slice(0, 2).join('\n');
-  const shouldShowViewMore = descriptionLines.length > 2 || (car.description && car.description.length > 100);
-
+  
+  // Conditionally render "View More" button
+  const descriptionText = car.description || '';
+  const shouldShowViewMore = descriptionText.split('\n').filter(line => line.trim() !== '').length > 2 || descriptionText.length > 100;
+  
   return (
     <div className="bg-white rounded-md shadow-sm overflow-hidden hover:shadow-lg transition-all duration-300 max-w-[22rem] m-2 hover-lift animate-scaleIn">
       <div className="relative w-full h-28 bg-gray-200">
@@ -204,8 +201,8 @@ export const CarCard: React.FC<CarCardProps> = ({ car }) => {
 
         {car.description && (
           <div className="mb-2">
-            <p className="text-[0.625rem] text-gray-600 whitespace-pre-line">
-              {displayDescription}
+            <p className={`text-[0.625rem] text-gray-600 whitespace-pre-line ${!showFullDescription ? 'line-clamp-2' : ''}`}>
+              {car.description}
             </p>
             {shouldShowViewMore && (
               <button
