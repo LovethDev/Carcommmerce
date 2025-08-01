@@ -76,8 +76,7 @@ export const Header: React.FC = () => {
               to="/admin"
               className="flex items-center bg-blue-600 hover:bg-blue-700 text-white rounded-full px-5 py-2 text-sm font-semibold shadow-md transition-all duration-300 ease-in-out transform hover:scale-105"
             >
-              <LogIn className="h-4 w-4 mr-2" />
-              Admin Login
+         
             </Link>
           </nav>
 
