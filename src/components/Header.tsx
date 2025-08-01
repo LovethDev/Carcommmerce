@@ -130,7 +130,7 @@ export const Header: React.FC = () => {
               className={`block w-full text-white-500 text-left px-4 py-3 rounded-lg text-lg font-medium transition-all duration-300 hover:scale-105 hover-lift 
                 ${isActive('/about')
                   ? ' text-white-500 shadow-md'
-                  : 'text-white-500 hover:bg-gray-700 hover:text-white'
+                  : 'text-white hover:bg-gray-700 hover:text-white'
                 }
               `}
             >
