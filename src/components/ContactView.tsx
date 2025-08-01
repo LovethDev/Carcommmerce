@@ -132,14 +132,14 @@ export const ContactView: React.FC = () => {
               <h3 className="text-xl font-bold text-gray-900 mb-4">Quick Actions</h3>
               <div className="space-y-3">
                 <button
-                  onClick={() => window.open('tel:+2341234567890')}
+                  onClick={() => window.open('tel:++2348058490498')}
                   className="w-full bg-red-600 text-white py-3 px-4 rounded-lg shadow-md hover:bg-red-700 transition duration-300 ease-in-out transform hover:scale-105 font-medium flex items-center justify-center"
                 >
                   <Phone className="w-4 h-4 mr-2" />
                   Call for Inspection
                 </button>
                 <button
-                  onClick={() => window.open('mailto:info@bukasondeigasonautos.com')}
+                  onClick={() => window.open('mailto:Bukasondeigaautos@gmail.com')}
                   className="w-full bg-gray-700 text-white py-3 px-4 rounded-lg shadow-md hover:bg-gray-800 transition duration-300 ease-in-out font-medium flex items-center justify-center"
                 >
                   <Mail className="w-4 h-4 mr-2" />
