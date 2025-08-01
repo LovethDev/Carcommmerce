@@ -138,14 +138,14 @@ export const CarCard: React.FC<CarCardProps> = ({ car }) => {
   const shouldShowViewMore = descriptionLines.length > 2 || (car.description && car.description.length > 100);
 
   return (
-    <div className="bg-white rounded-md shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-300 mx-auto max-w-[18rem] mb-2">
+    <div className="bg-white rounded-md shadow-sm overflow-hidden hover:shadow-lg transition-all duration-300 mx-auto max-w-[18rem] mb-2 hover-lift animate-scaleIn">
       <div className="relative w-full h-32 bg-gray-200">
         {images.length > 0 ? (
           <>
             <img
               src={images?.[currentImageIndex]}
               alt={`${car.brand} ${car.model} - Image ${currentImageIndex + 1}`}
-              className="w-full h-full object-cover cursor-pointer rounded-t-md"
+              className="w-full h-full object-cover cursor-pointer rounded-t-md transition-transform duration-300 hover:scale-105"
               onClick={handleImageClick}
               onError={(e) => { e.currentTarget.src = 'https://via.placeholder.com/150?text=Image+Error'; e.currentTarget.alt = "Image not available"; }}
             />
@@ -154,14 +154,14 @@ export const CarCard: React.FC<CarCardProps> = ({ car }) => {
               <>
                 <button
                   onClick={prevImage}
-                  className="absolute left-1 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-0.5 rounded-full hover:bg-opacity-70 transition-opacity"
+                  className="absolute left-1 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-0.5 rounded-full hover:bg-opacity-70 transition-all duration-300 hover:scale-110"
                   aria-label="Previous image"
                 >
                   <ChevronLeft className="w-3 h-3" />
                 </button>
                 <button
                   onClick={nextImage}
-                  className="absolute right-1 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-0.5 rounded-full hover:bg-opacity-70 transition-opacity"
+                  className="absolute right-1 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-0.5 rounded-full hover:bg-opacity-70 transition-all duration-300 hover:scale-110"
                   aria-label="Next image"
                 >
                   <ChevronRight className="w-3 h-3" />
@@ -173,7 +173,7 @@ export const CarCard: React.FC<CarCardProps> = ({ car }) => {
                     <button
                       key={index}
                       onClick={() => setCurrentImageIndex(index)}
-                      className={`w-1 h-1 rounded-full transition-colors ${
+                      className={`w-1 h-1 rounded-full transition-all duration-300 hover:scale-150 ${
                         index === currentImageIndex ? 'bg-white' : 'bg-white bg-opacity-50'
                       }`}
                       aria-label={`View image ${index + 1}`}
@@ -182,16 +182,16 @@ export const CarCard: React.FC<CarCardProps> = ({ car }) => {
                 </div>
 
                 {/* Click to expand hint */}
-                <div className="absolute top-1 right-1 bg-black bg-opacity-50 text-white text-[0.5rem] px-1 py-0.5 rounded">
+                <div className="absolute top-1 right-1 bg-black bg-opacity-50 text-white text-[0.5rem] px-1 py-0.5 rounded animate-fadeInRight">
                   Click to expand
                 </div>
               </>
             )}
           </>
         ) : (
-          <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center rounded-t-md">
+          <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center rounded-t-md animate-fadeInUp">
             <div className="text-center">
-              <div className="w-6 h-6 bg-gray-300 rounded-full mx-auto mb-0.5 flex items-center justify-center">
+              <div className="w-6 h-6 bg-gray-300 rounded-full mx-auto mb-0.5 flex items-center justify-center animate-float">
                 <span className="text-base text-gray-500">🚗</span>
               </div>
               <p className="text-[0.5rem] text-gray-500">No Image</p>
@@ -200,7 +200,7 @@ export const CarCard: React.FC<CarCardProps> = ({ car }) => {
         )}
       </div>
 
-      <div className="p-2">
+      <div className="p-2 animate-fadeInUp animate-delay-200">
         <div className="flex items-start justify-between mb-1">
           <div className="flex-1 pr-1">
             <h3 className="text-sm font-bold text-gray-900 mb-0.5 leading-tight">
@@ -226,7 +226,7 @@ export const CarCard: React.FC<CarCardProps> = ({ car }) => {
             {shouldShowViewMore && (
               <button
                 onClick={() => setShowFullDescription(!showFullDescription)}
-                className="text-blue-600 text-[0.625rem] hover:underline mt-0.5 block"
+                className="text-blue-600 text-[0.625rem] hover:underline mt-0.5 block transition-all duration-300 hover:scale-105"
               >
                 {showFullDescription ? 'View Less' : 'View More'}
               </button>
@@ -236,7 +236,7 @@ export const CarCard: React.FC<CarCardProps> = ({ car }) => {
 
         <button
           onClick={handleCallInspection}
-          className="w-8 h-8 bg-red-600 text-white rounded-full flex items-center justify-center hover:bg-red-700 transition-colors shadow-sm mx-auto mt-2"
+          className="w-8 h-8 bg-red-600 text-white rounded-full flex items-center justify-center hover:bg-red-700 transition-all duration-300 shadow-sm mx-auto mt-2 hover:scale-110 hover-lift animate-fadeInUp animate-delay-300"
           aria-label="Call for Inspection"
         >
           <Phone className="w-4 h-4" />

@@ -87,11 +87,11 @@ export const AdminView: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 animate-fadeInUp">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
-        <div className="flex justify-between items-center mb-8">
-          <div>
+        <div className="flex justify-between items-center mb-8 animate-fadeInUp">
+          <div className="animate-fadeInLeft">
             <h1 className="text-3xl font-bold text-gray-900">Car Management</h1>
             <p className="text-gray-600 mt-1">
               Manage your car listings and inventory
@@ -99,7 +99,7 @@ export const AdminView: React.FC = () => {
           </div>
           <button
             onClick={() => setShowCarForm(true)}
-            className="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 flex items-center font-medium"
+            className="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 flex items-center font-medium transition-all duration-300 hover:scale-105 hover-lift animate-fadeInRight"
           >
             <Plus className="w-5 h-5 mr-2" />
             Add New Car
@@ -107,10 +107,10 @@ export const AdminView: React.FC = () => {
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-white rounded-lg shadow p-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 animate-fadeInUp animate-delay-200">
+          <div className="bg-white rounded-lg shadow p-6 hover-lift animate-scaleIn">
             <div className="flex items-center">
-              <div className="p-2 bg-red-100 rounded-lg">
+              <div className="p-2 bg-red-100 rounded-lg animate-float">
                 <Eye className="w-6 h-6 text-red-600" />
               </div>
               <div className="ml-4">
@@ -120,9 +120,9 @@ export const AdminView: React.FC = () => {
             </div>
           </div>
           
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="bg-white rounded-lg shadow p-6 hover-lift animate-scaleIn animate-delay-100">
             <div className="flex items-center">
-              <div className="p-2 bg-green-100 rounded-lg">
+              <div className="p-2 bg-green-100 rounded-lg animate-float">
                 <span className="text-green-600 font-bold">₦</span>
               </div>
               <div className="ml-4">
@@ -136,32 +136,32 @@ export const AdminView: React.FC = () => {
         </div>
 
         {/* Cars Table */}
-        <div className="bg-white rounded-lg shadow overflow-hidden">
-          <div className="px-6 py-4 border-b border-gray-200">
+        <div className="bg-white rounded-lg shadow overflow-hidden hover-lift animate-fadeInUp animate-delay-300">
+          <div className="px-6 py-4 border-b border-gray-200 animate-fadeInUp">
             <h2 className="text-lg font-medium text-gray-900">Car Listings</h2>
           </div>
           
           {carsLoading ? (
-            <div className="flex items-center justify-center py-12">
+            <div className="flex items-center justify-center py-12 animate-fadeInUp">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-red-600"></div>
             </div>
           ) : cars.length === 0 ? (
-            <div className="text-center py-12">
-              <div className="w-24 h-24 bg-gray-200 rounded-full mx-auto mb-4 flex items-center justify-center">
+            <div className="text-center py-12 animate-scaleIn">
+              <div className="w-24 h-24 bg-gray-200 rounded-full mx-auto mb-4 flex items-center justify-center animate-float">
                 <span className="text-4xl text-gray-400">🚗</span>
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">No cars yet</h3>
               <p className="text-gray-600 mb-4">Start by adding your first car listing</p>
               <button
                 onClick={() => setShowCarForm(true)}
-                className="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700"
+                className="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 transition-all duration-300 hover:scale-105 hover-lift"
               >
                 Add Your First Car
               </button>
             </div>
           ) : (
             <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
+              <table className="min-w-full divide-y divide-gray-200 animate-fadeInUp animate-delay-100">
                 <thead className="bg-gray-50">
                   <tr>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -183,13 +183,13 @@ export const AdminView: React.FC = () => {
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
                   {cars.map((car) => (
-                    <tr key={car.id} className="hover:bg-gray-50">
+                    <tr key={car.id} className="hover:bg-gray-50 transition-all duration-300 animate-fadeInUp">
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center">
                           <div className="flex-shrink-0 h-12 w-12">
                             {car.image_url ? (
                               <img
-                                className="h-12 w-12 rounded-lg object-cover"
+                                className="h-12 w-12 rounded-lg object-cover transition-transform duration-300 hover:scale-110"
                                 src={car.image_url}
                                 alt={`${car.brand} ${car.model}`}
                               />
@@ -222,14 +222,14 @@ export const AdminView: React.FC = () => {
                         <div className="flex justify-end space-x-2">
                           <button
                             onClick={() => handleEditCar(car)}
-                            className="text-blue-600 hover:text-blue-900 p-2 hover:bg-red-50 rounded-lg"
+                            className="text-blue-600 hover:text-blue-900 p-2 hover:bg-red-50 rounded-lg transition-all duration-300 hover:scale-110"
                             title="Edit car"
                           >
                             <Edit2 className="w-4 h-4" />
                           </button>
                           <button
                             onClick={() => handleDeleteCar(car)}
-                            className="text-red-600 hover:text-red-900 p-2 hover:bg-red-50 rounded-lg"
+                            className="text-red-600 hover:text-red-900 p-2 hover:bg-red-50 rounded-lg transition-all duration-300 hover:scale-110"
                             title="Delete car"
                           >
                             <Trash2 className="w-4 h-4" />

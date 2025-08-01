@@ -154,34 +154,34 @@ export const PublicView: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 font-sans">
+    <div className="min-h-screen bg-gray-100 font-sans animate-fadeInUp">
       {/* Hero Section */}
-      <div className="bg-gradient-to-br from-gray-900 to-gray-700 text-white shadow-lg">
+      <div className="bg-gradient-to-br from-gray-900 to-gray-700 text-white shadow-lg animate-fadeInUp">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
-          <div className="text-center">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-4 leading-tight">
+          <div className="text-center animate-fadeInUp">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-4 leading-tight animate-fadeInUp animate-delay-200">
               Your Dream Car Awaits
             </h1>
-            <p className="text-lg sm:text-xl mb-10 text-gray-300 max-w-2xl mx-auto">
+            <p className="text-lg sm:text-xl mb-10 text-gray-300 max-w-2xl mx-auto animate-fadeInUp animate-delay-300">
               Explore a curated selection of quality used cars from Bukason Deigason Autos. Find your perfect ride today.
             </p>
 
             {/* Search Bar */}
-            <div className="max-w-xl mx-auto relative shadow-xl rounded-full">
+            <div className="max-w-xl mx-auto relative shadow-xl rounded-full animate-fadeInUp animate-delay-400 hover-lift">
               <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-6 h-6" />
               <input
                 type="text"
                 placeholder="Search by brand, model, or keyword..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-12 pr-6 py-4 rounded-full text-gray-900 placeholder-gray-500 focus:ring-4 focus:ring-red-500 focus:outline-none transition duration-200"
+                className="w-full pl-12 pr-6 py-4 rounded-full text-gray-900 placeholder-gray-500 focus:ring-4 focus:ring-red-500 focus:outline-none transition-all duration-300 focus:scale-105"
               />
             </div>
           </div>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 animate-fadeInUp animate-delay-500">
         <div className="flex flex-col lg:flex-row gap-10">
           {/* Sidebar - Hidden on mobile by default, shown via button */}
           <FilterSidebar
@@ -201,8 +201,8 @@ export const PublicView: React.FC = () => {
           {/* Main Content */}
           <div className="flex-1">
             {/* Results Header and Filter Button for Mobile */}
-            <div className="flex justify-between items-center mb-8">
-              <div>
+            <div className="flex justify-between items-center mb-8 animate-fadeInLeft">
+              <div className="animate-fadeInLeft animate-delay-100">
                 <h2 className="text-3xl font-bold text-gray-900">Available Cars</h2>
                 <p className="text-gray-600 text-lg">
                   {filteredCars.length} car{filteredCars.length !== 1 ? 's' : ''} found
@@ -211,7 +211,7 @@ export const PublicView: React.FC = () => {
 
               <button
                 onClick={() => setShowFilters(true)}
-                className="lg:hidden flex items-center bg-red-600 text-white px-5 py-3 rounded-full shadow-md hover:bg-red-700 transition duration-300 ease-in-out transform hover:scale-105"
+                className="lg:hidden flex items-center bg-red-600 text-white px-5 py-3 rounded-full shadow-md hover:bg-red-700 transition-all duration-300 ease-in-out transform hover:scale-105 animate-fadeInRight animate-delay-200 hover-lift"
               >
                 <Filter className="w-5 h-5 mr-2" />
                 Filters
@@ -220,8 +220,8 @@ export const PublicView: React.FC = () => {
 
             {/* Car Grid */}
             {filteredCars.length === 0 ? (
-              <div className="text-center py-20 bg-white rounded-xl shadow-lg border border-gray-200">
-                <div className="w-28 h-28 bg-red-100 rounded-full mx-auto mb-6 flex items-center justify-center shadow-inner">
+              <div className="text-center py-20 bg-white rounded-xl shadow-lg border border-gray-200 animate-scaleIn">
+                <div className="w-28 h-28 bg-red-100 rounded-full mx-auto mb-6 flex items-center justify-center shadow-inner animate-float">
                   <span className="text-5xl text-red-500">🚗</span>
                 </div>
                 <h3 className="text-2xl font-bold text-gray-900 mb-3">No cars found</h3>
@@ -236,13 +236,13 @@ export const PublicView: React.FC = () => {
                     setYearRange([1990, new Date().getFullYear()]);
                     setSortBy('newest');
                   }}
-                  className="bg-gray-700 text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition duration-300 ease-in-out shadow-md"
+                  className="bg-gray-700 text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-all duration-300 ease-in-out shadow-md hover:scale-105 hover-lift"
                 >
                   Clear All Filters
                 </button>
               </div>
             ) : (
-              <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+              <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 animate-fadeInUp animate-delay-300">
                 {filteredCars.slice(0, carsToShow).map((car) => (
                   <CarCard key={car.id} car={car} />
                 ))}
@@ -251,7 +251,7 @@ export const PublicView: React.FC = () => {
 
             {/* Loading more cars indicator */}
             {carsToShow < filteredCars.length && (
-              <div className="flex justify-center items-center py-8">
+              <div className="flex justify-center items-center py-8 animate-fadeInUp">
                 <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-red-600"></div>
                 <p className="ml-4 text-gray-500">Loading more cars...</p>
               </div>

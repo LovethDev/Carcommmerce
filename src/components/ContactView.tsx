@@ -36,14 +36,14 @@ export const ContactView: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 font-sans">
+    <div className="min-h-screen bg-gray-100 font-sans animate-fadeInUp">
       {/* Success Message Modal */}
       {showSuccessMessage && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900 bg-opacity-50 transition-opacity duration-300">
-          <div className="bg-white p-8 rounded-lg shadow-2xl max-w-sm w-full transform scale-100 transition-transform duration-300">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900 bg-opacity-50 transition-opacity duration-300 animate-fadeInUp">
+          <div className="bg-white p-8 rounded-lg shadow-2xl max-w-sm w-full transform scale-100 transition-all duration-300 animate-scaleIn">
             <div className="flex justify-between items-start mb-4">
               <h3 className="text-xl font-bold text-gray-900">Message Sent!</h3>
-              <button onClick={() => setShowSuccessMessage(false)} className="text-gray-400 hover:text-gray-600 transition-colors">
+              <button onClick={() => setShowSuccessMessage(false)} className="text-gray-400 hover:text-gray-600 transition-all duration-300 hover:scale-110">
                 <XCircle className="w-6 h-6" />
               </button>
             </div>
@@ -52,7 +52,7 @@ export const ContactView: React.FC = () => {
             </p>
             <button
               onClick={() => setShowSuccessMessage(false)}
-              className="w-full bg-red-600 text-white py-3 rounded-lg hover:bg-red-700 transition-colors"
+              className="w-full bg-red-600 text-white py-3 rounded-lg hover:bg-red-700 transition-all duration-300 hover:scale-105 hover-lift"
             >
               Close
             </button>
@@ -61,26 +61,26 @@ export const ContactView: React.FC = () => {
       )}
 
       {/* Hero Section */}
-      <div className="bg-gradient-to-br from-gray-900 to-gray-700 text-white shadow-lg">
+      <div className="bg-gradient-to-br from-gray-900 to-gray-700 text-white shadow-lg animate-fadeInUp">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 text-center">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-4 leading-tight">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-4 leading-tight animate-fadeInUp animate-delay-200">
             Contact Us
           </h1>
-          <p className="text-lg sm:text-xl mb-10 text-gray-300 max-w-2xl mx-auto">
+          <p className="text-lg sm:text-xl mb-10 text-gray-300 max-w-2xl mx-auto animate-fadeInUp animate-delay-300">
             Get in touch with Bukason Deigason Autos. We're here to help you find your perfect vehicle.
           </p>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 animate-fadeInUp animate-delay-400">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Contact Information */}
-          <div className="space-y-8">
-            <div className="bg-white rounded-xl shadow-lg p-8">
-              <h2 className="text-3xl font-bold text-gray-900 mb-6">Get in Touch</h2>
+          <div className="space-y-8 animate-fadeInLeft">
+            <div className="bg-white rounded-xl shadow-lg p-8 hover-lift animate-scaleIn">
+              <h2 className="text-3xl font-bold text-gray-900 mb-6 animate-fadeInUp">Get in Touch</h2>
               <div className="space-y-6">
-                <div className="flex items-start">
-                  <div className="bg-red-50 p-3 rounded-full mr-4 shadow-inner">
+                <div className="flex items-start animate-fadeInUp animate-delay-100">
+                  <div className="bg-red-50 p-3 rounded-full mr-4 shadow-inner animate-float">
                     <Phone className="w-6 h-6 text-red-600" />
                   </div>
                   <div>
@@ -90,8 +90,8 @@ export const ContactView: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="flex items-start">
-                  <div className="bg-red-50 p-3 rounded-full mr-4 shadow-inner">
+                <div className="flex items-start animate-fadeInUp animate-delay-200">
+                  <div className="bg-red-50 p-3 rounded-full mr-4 shadow-inner animate-float">
                     <Mail className="w-6 h-6 text-red-600" />
                   </div>
                   <div>
@@ -101,8 +101,8 @@ export const ContactView: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="flex items-start">
-                  <div className="bg-red-50 p-3 rounded-full mr-4 shadow-inner">
+                <div className="flex items-start animate-fadeInUp animate-delay-300">
+                  <div className="bg-red-50 p-3 rounded-full mr-4 shadow-inner animate-float">
                     <MapPin className="w-6 h-6 text-red-600" />
                   </div>
                   <div>
@@ -113,8 +113,8 @@ export const ContactView: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="flex items-start">
-                  <div className="bg-red-50 p-3 rounded-full mr-4 shadow-inner">
+                <div className="flex items-start animate-fadeInUp animate-delay-400">
+                  <div className="bg-red-50 p-3 rounded-full mr-4 shadow-inner animate-float">
                     <Clock className="w-6 h-6 text-red-600" />
                   </div>
                   <div>
@@ -128,19 +128,19 @@ export const ContactView: React.FC = () => {
             </div>
 
             {/* Quick Actions */}
-            <div className="p-6 bg-white rounded-xl shadow-lg border border-gray-200">
-              <h3 className="text-xl font-bold text-gray-900 mb-4">Quick Actions</h3>
+            <div className="p-6 bg-white rounded-xl shadow-lg border border-gray-200 hover-lift animate-scaleIn animate-delay-200">
+              <h3 className="text-xl font-bold text-gray-900 mb-4 animate-fadeInUp">Quick Actions</h3>
               <div className="space-y-3">
                 <button
                   onClick={() => window.open('tel:++2348058490498')}
-                  className="w-full bg-red-600 text-white py-3 px-4 rounded-lg shadow-md hover:bg-red-700 transition duration-300 ease-in-out transform hover:scale-105 font-medium flex items-center justify-center"
+                  className="w-full bg-red-600 text-white py-3 px-4 rounded-lg shadow-md hover:bg-red-700 transition-all duration-300 ease-in-out transform hover:scale-105 font-medium flex items-center justify-center hover-lift animate-fadeInUp animate-delay-100"
                 >
                   <Phone className="w-4 h-4 mr-2" />
                   Call for Inspection
                 </button>
                 <button
                   onClick={() => window.open('mailto:Bukasondeigaautos@gmail.com')}
-                  className="w-full bg-gray-700 text-white py-3 px-4 rounded-lg shadow-md hover:bg-gray-800 transition duration-300 ease-in-out font-medium flex items-center justify-center"
+                  className="w-full bg-gray-700 text-white py-3 px-4 rounded-lg shadow-md hover:bg-gray-800 transition-all duration-300 ease-in-out font-medium flex items-center justify-center hover-lift animate-fadeInUp animate-delay-200"
                 >
                   <Mail className="w-4 h-4 mr-2" />
                   Send Email
@@ -150,10 +150,10 @@ export const ContactView: React.FC = () => {
           </div>
 
           {/* Contact Form */}
-          <div className="bg-white rounded-xl shadow-lg p-8 h-full">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Send us a Message</h2>
+          <div className="bg-white rounded-xl shadow-lg p-8 h-full hover-lift animate-fadeInRight">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6 animate-fadeInUp">Send us a Message</h2>
             <form onSubmit={handleSubmit} className="space-y-6">
-              <div>
+              <div className="animate-fadeInUp animate-delay-100">
                 <label htmlFor="name" className="block text-sm font-semibold text-gray-700 mb-2">
                   Full Name *
                 </label>
@@ -164,12 +164,12 @@ export const ContactView: React.FC = () => {
                   required
                   value={formData.name}
                   onChange={handleChange}
-                  className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-red-500 focus:border-transparent transition duration-200"
+                  className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-300 focus:scale-105"
                   placeholder="Your full name"
                 />
               </div>
 
-              <div>
+              <div className="animate-fadeInUp animate-delay-200">
                 <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
                   Email Address *
                 </label>
@@ -180,12 +180,12 @@ export const ContactView: React.FC = () => {
                   required
                   value={formData.email}
                   onChange={handleChange}
-                  className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-red-500 focus:border-transparent transition duration-200"
+                  className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-300 focus:scale-105"
                   placeholder="your.email@example.com"
                 />
               </div>
 
-              <div>
+              <div className="animate-fadeInUp animate-delay-300">
                 <label htmlFor="phone" className="block text-sm font-semibold text-gray-700 mb-2">
                   Phone Number
                 </label>
@@ -195,12 +195,12 @@ export const ContactView: React.FC = () => {
                   name="phone"
                   value={formData.phone}
                   onChange={handleChange}
-                  className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-red-500 focus:border-transparent transition duration-200"
+                  className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-300 focus:scale-105"
                   placeholder="+234 123 456 7890"
                 />
               </div>
 
-              <div>
+              <div className="animate-fadeInUp animate-delay-400">
                 <label htmlFor="message" className="block text-sm font-semibold text-gray-700 mb-2">
                   Message *
                 </label>
@@ -211,14 +211,14 @@ export const ContactView: React.FC = () => {
                   rows={5}
                   value={formData.message}
                   onChange={handleChange}
-                  className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-red-500 focus:border-transparent transition duration-200"
+                  className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-300 focus:scale-105"
                   placeholder="Tell us about the car you're looking for or any questions you have..."
                 />
               </div>
 
               <button
                 type="submit"
-                className="w-full bg-red-600 text-white py-3 px-4 rounded-lg shadow-md hover:bg-red-700 transition duration-300 ease-in-out font-medium flex items-center justify-center transform hover:scale-105"
+                className="w-full bg-red-600 text-white py-3 px-4 rounded-lg shadow-md hover:bg-red-700 transition-all duration-300 ease-in-out font-medium flex items-center justify-center transform hover:scale-105 hover-lift animate-fadeInUp animate-delay-500"
               >
                 <Send className="w-4 h-4 mr-2" />
                 Send Message
