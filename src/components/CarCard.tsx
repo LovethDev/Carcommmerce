@@ -145,7 +145,7 @@ export const CarCard: React.FC<CarCardProps> = ({ car }) => {
             <img
               src={images?.[currentImageIndex]}
               alt={`${car.brand} ${car.model} - Image ${currentImageIndex + 1}`}
-              className="w-full h-full object-cover cursor-pointer rounded-t-md transition-transform duration-300 hover:scale-105"
+              className="w-7 h-full object-cover cursor-pointer rounded-t-md transition-transform duration-300 hover:scale-105"
               onClick={handleImageClick}
               onError={(e) => { e.currentTarget.src = 'https://via.placeholder.com/150?text=Image+Error'; e.currentTarget.alt = "Image not available"; }}
             />
