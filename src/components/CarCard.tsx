@@ -119,16 +119,16 @@ export const CarCard: React.FC<CarCardProps> = ({ car }) => {
     );
   };
 
-  // Description logic: show max 4 lines
+  // Description logic: show max 2 lines
   const descriptionLines = car.description ? car.description.split('\n').filter(line => line.trim() !== '') : [];
   const displayDescription = showFullDescription
     ? car.description
     : descriptionLines.slice(0, 2).join('\n');
-  const shouldShowViewMore = descriptionLines.length > 4 || (car.description && car.description.length > 200);
+  const shouldShowViewMore = descriptionLines.length > 2 || (car.description && car.description.length > 100);
 
   return (
-    <div className="bg-white rounded-md shadow-sm overflow-hidden hover:shadow-lg transition-all duration-300 max-w-[20rem] m-2 hover-lift animate-scaleIn">
-      <div className="relative w-full h-32 bg-gray-200">
+    <div className="bg-white rounded-md shadow-sm overflow-hidden hover:shadow-lg transition-all duration-300 max-w-[22rem] m-2 hover-lift animate-scaleIn">
+      <div className="relative w-full h-28 bg-gray-200">
         {images.length > 0 ? (
           <>
             <img
