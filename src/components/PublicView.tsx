@@ -44,14 +44,14 @@ const Footer: React.FC = () => {
               <a href="#" aria-label="Instagram" className="hover:text-red-500 transition-colors duration-200">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07c3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.645.069-4.849.069s-3.584-.012-4.849-.069c-3.254-.148-4.771-1.691-4.919-4.919-.058-1.265-.069-1.645-.069-4.849 0-3.204.012-3.584.069-4.849.149-3.225 1.664-4.771 4.919-4.919 1.265-.058 1.644-.069 4.849-.069zM12 0C8.74 0 8.351.015 7.053.072c-2.69.123-4.588 1.518-4.71 4.71-.059 1.3-.072 1.68-.072 4.938s.013 3.638.072 4.938c.122 3.193 2.02 4.588 4.71 4.71 1.299.059 1.68.072 4.938.072s3.638-.013 4.938-.072c3.193-.122 4.588-2.02 4.71-4.71.059-1.3.072-1.68.072-4.938s-.013-3.638-.072-4.938c-.122-3.193-2.02-4.588-4.71-4.71C15.638.015 15.25 0 12 0zm0 6.627a5.373 5.373 0 100 10.746 5.373 5.373 0 000-10.746zM12 15.627a3.627 3.627 0 110-7.254 3.627 3.627 0 010 7.254zM16.804 5.25a1.2 1.2 0 100-2.4 1.2 1.2 0 000 2.4z"/></svg>
               </a>
-            </div>
-          </div>
-        </div>
-        <div className="mt-8 pt-8 border-t border-gray-700 text-center text-sm">
-          <p>&copy; {new Date().getFullYear()} Bukason Deigason Autos. All rights reserved.</p>
         </div>
       </div>
-    </footer>
+    </div>
+    <div className="mt-8 pt-8 border-t border-gray-700 text-center text-sm">
+      <p>&copy; {new Date().getFullYear()} Bukason Deigason Autos. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
   );
 };
 
@@ -72,13 +72,16 @@ export const PublicView: React.FC = () => {
   const carsPerLoad = 12;
 
   const brands = useMemo(() => {
+    if (!cars || cars.length === 0) return [];
     const uniqueBrands = [...new Set(cars.map(car => car.brand))];
     return uniqueBrands.sort();
   }, [cars]);
 
   const filteredCars = useMemo(() => {
+    if (!cars) return [];
     let filtered = cars.filter(car => {
       const carPrice = Number(car.price);
+      // IMPROVEMENT: Handle malformed or missing price data more gracefully
       if (isNaN(carPrice)) return false;
 
       const matchesSearch =
@@ -110,8 +113,9 @@ export const PublicView: React.FC = () => {
 
   // Infinite scroll logic
   const handleScroll = useCallback(() => {
+    // DEBOUNCE/THROTTLE IMPROVEMENT: Consider throttling this function for performance.
+    // For this example, the simple check is sufficient.
     if (window.innerHeight + document.documentElement.scrollTop + 1 >= document.documentElement.scrollHeight) {
-      // Check if we have more cars to show
       if (carsToShow < filteredCars.length) {
         setCarsToShow(prevCarsToShow => prevCarsToShow + carsPerLoad);
       }
@@ -123,10 +127,13 @@ export const PublicView: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [handleScroll]);
 
-  // Reset carsToShow when filters change
+  // Reset carsToShow when filters change.
+  // DEPENDENCY ARRAY IMPROVEMENT: Added all filter-related states to the dependency array.
+  // This is crucial for correctly resetting the infinite scroll view when a filter is changed.
   useEffect(() => {
     setCarsToShow(carsPerLoad);
-  }, [searchTerm, selectedBrand, priceRange, yearRange, sortBy, cars]);
+  }, [searchTerm, selectedBrand, priceRange[0], priceRange[1], yearRange[0], yearRange[1], sortBy]);
+
 
   if (loading) {
     return (
@@ -177,9 +184,9 @@ export const PublicView: React.FC = () => {
                 className="w-full pl-12 pr-6 py-4 rounded-full text-gray-900 placeholder-gray-500 focus:ring-4 focus:ring-red-500 focus:outline-none transition-all duration-300 focus:scale-105"
               />
             </div>
-          </div>
         </div>
-      </div>
+    </div>
+</div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 animate-fadeInUp animate-delay-500">
         <div className="flex flex-col lg:flex-row gap-10">
@@ -216,7 +223,7 @@ export const PublicView: React.FC = () => {
                 <Filter className="w-5 h-5 mr-2" />
                 Filters
               </button>
-            </div>
+        </div>
 
             {/* Car Grid */}
             {filteredCars.length === 0 ? (
@@ -225,4 +232,41 @@ export const PublicView: React.FC = () => {
                   <span className="text-5xl text-red-500">🚗</span>
                 </div>
                 <h3 className="text-2xl font-bold text-gray-900 mb-3">No cars found</h3>
-                <p
+                <p className="text-gray-600 text-lg mb-6 max-w-md mx-auto">
+                  It seems there are no cars matching your current search criteria or filters.
+                </p>
+                <button
+                  onClick={() => {
+                    setSearchTerm('');
+                    setSelectedBrand('');
+                    setPriceRange([0, MAX_POSSIBLE_PRICE]);
+                    setYearRange([1990, new Date().getFullYear()]);
+                    setSortBy('newest');
+                  }}
+                  className="bg-gray-700 text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-all duration-300 ease-in-out shadow-md hover:scale-105 hover-lift"
+                >
+                  Clear All Filters
+                </button>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 animate-fadeInUp animate-delay-300">
+                {filteredCars.slice(0, carsToShow).map((car) => (
+                  <CarCard key={car.id} car={car} />
+                ))}
+              </div>
+            )}
+
+            {/* Loading more cars indicator */}
+            {carsToShow < filteredCars.length && (
+              <div className="flex justify-center items-center py-8 animate-fadeInUp">
+                <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-red-600"></div>
+                <p className="ml-4 text-gray-500">Loading more cars...</p>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+      <Footer />
+    </div>
+  );
+};
