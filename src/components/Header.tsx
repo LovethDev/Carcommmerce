@@ -127,7 +127,7 @@ export const Header: React.FC = () => {
             <Link
               to="/about"
               onClick={handleCloseMobileMenu}
-              className={`block w-full text-gray-500 text-left px-4 py-3 rounded-lg text-lg font-medium transition-all duration-300 hover:scale-105 hover-lift bg-red-200
+              className={`block w-full text-gray-500 text-left px-4 py-3 rounded-lg text-lg font-medium transition-all duration-300 hover:scale-105 hover-lift 
                 ${isActive('/about')
                   ? 'bg-red-700 text-white shadow-md'
                   : 'text-gray-300 hover:bg-gray-700 hover:text-white'
