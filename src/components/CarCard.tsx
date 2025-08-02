@@ -243,11 +243,11 @@ export const CarCard: React.FC<CarCardProps> = ({ car }) => {
             <div className="flex items-center space-x-4 text-xs text-gray-500">
               <div className="flex items-center space-x-1">
                 <MapPin className="w-3 h-3" />
-                <span>Lagos, NG</span>
+                <span>Delta, NG</span>
               </div>
               <div className="flex items-center space-x-1">
                 <Settings className="w-3 h-3" />
-                <span>Inspected</span>
+                <span>call to inspect</span>
               </div>
             </div>
             
