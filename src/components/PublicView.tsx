@@ -165,25 +165,25 @@ export const PublicView: React.FC = () => {
 
             {/* Car Grid */}
             {filteredCars.length === 0 ? (
-              <div className="text-center py-20 bg-white rounded-xl shadow-lg border border-gray-200 animate-scaleIn">
-                <div className="w-28 h-28 bg-red-100 rounded-full mx-auto mb-6 flex items-center justify-center shadow-inner animate-float">
-                  <span className="text-5xl text-red-500">🚗</span>
+              <div className="text-center py-24 bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow-xl border border-gray-100 animate-scaleIn">
+                <div className="w-32 h-32 bg-gradient-to-br from-red-100 to-red-50 rounded-full mx-auto mb-8 flex items-center justify-center shadow-lg animate-float">
+                  <span className="text-6xl text-red-500">🚗</span>
                 </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-3">No cars found</h3>
-                <p className="text-gray-600 text-lg mb-6 max-w-md mx-auto">
+                <h3 className="text-3xl font-bold text-gray-900 mb-4">No cars found</h3>
+                <p className="text-gray-600 text-lg mb-8 max-w-lg mx-auto leading-relaxed">
                   It seems there are no cars matching your current search criteria.
                 </p>
                 <button
                   onClick={() => {
                     setSearchTerm('');
                   }}
-                  className="bg-gray-700 text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-all duration-300 ease-in-out shadow-md hover:scale-105 hover-lift"
+                  className="bg-gradient-to-r from-red-600 to-red-700 text-white px-8 py-3 rounded-full hover:from-red-700 hover:to-red-800 transition-all duration-300 ease-in-out shadow-lg hover:scale-105 hover:shadow-xl font-medium"
                 >
                   Clear Search
                 </button>
               </div>
             ) : (
-              <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8 animate-fadeInUp animate-delay-300">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 animate-fadeInUp animate-delay-300">
                 {filteredCars.slice(0, carsToShow).map((car) => (
                   <CarCard key={car.id} car={car} />
                 ))}
@@ -192,9 +192,9 @@ export const PublicView: React.FC = () => {
 
             {/* Loading more cars indicator */}
             {carsToShow < filteredCars.length && (
-              <div className="flex justify-center items-center py-8 animate-fadeInUp">
-                <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-red-600"></div>
-                <p className="ml-4 text-gray-500">Loading more cars...</p>
+              <div className="flex flex-col items-center py-12 animate-fadeInUp">
+                <div className="animate-spin rounded-full h-10 w-10 border-t-3 border-b-3 border-red-600 mb-4"></div>
+                <p className="text-gray-600 font-medium">Loading more cars...</p>
               </div>
             )}
           </div>

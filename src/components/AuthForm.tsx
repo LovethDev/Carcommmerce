@@ -49,20 +49,25 @@ export const AuthForm: React.FC = () => {
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md animate-fadeInUp animate-delay-300">
-        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10 hover-lift animate-scaleIn">
+        <div className="bg-white py-10 px-6 shadow-xl sm:rounded-2xl sm:px-12 hover-lift animate-scaleIn border border-gray-100">
           <form className="space-y-6" onSubmit={handleSubmit}>
             {error && (
-              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg animate-fadeInUp">
-                {error}
+              <div className="bg-gradient-to-r from-red-50 to-red-100 border border-red-200 text-red-700 px-6 py-4 rounded-xl animate-fadeInUp shadow-sm">
+                <div className="flex items-center">
+                  <div className="w-5 h-5 bg-red-200 rounded-full flex items-center justify-center mr-3">
+                    <span className="text-red-600 text-sm">!</span>
+                  </div>
+                  {error}
+                </div>
               </div>
             )}
 
             <div className="animate-fadeInUp animate-delay-100">
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="email" className="block text-sm font-bold text-gray-900 mb-2">
                 Email address
               </label>
               <div className="mt-1 relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                   <Mail className="h-5 w-5 text-gray-400" />
                 </div>
                 <input
@@ -73,18 +78,18 @@ export const AuthForm: React.FC = () => {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="appearance-none block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-red-500 focus:border-red-500 transition-all duration-300 focus:scale-105"
+                  className="appearance-none block w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-300 focus:scale-105 bg-white shadow-sm"
                   placeholder="Enter your email"
                 />
               </div>
             </div>
 
             <div className="animate-fadeInUp animate-delay-200">
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="password" className="block text-sm font-bold text-gray-900 mb-2">
                 Password
               </label>
               <div className="mt-1 relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                   <Lock className="h-5 w-5 text-gray-400" />
                 </div>
                 <input
@@ -95,10 +100,10 @@ export const AuthForm: React.FC = () => {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="appearance-none block w-full pl-10 pr-10 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-red-500 focus:border-red-500 transition-all duration-300 focus:scale-105"
+                  className="appearance-none block w-full pl-12 pr-12 py-3 border border-gray-300 rounded-xl placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-300 focus:scale-105 bg-white shadow-sm"
                   placeholder="Enter your password"
                 />
-                <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
+                <div className="absolute inset-y-0 right-0 pr-4 flex items-center">
                   <button
                     type="button"
                     className="text-gray-400 hover:text-gray-500 transition-all duration-300 hover:scale-110"
@@ -118,7 +123,7 @@ export const AuthForm: React.FC = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 hover:scale-105 hover-lift"
+                className="w-full flex justify-center py-3 px-6 border border-transparent rounded-xl shadow-lg text-base font-bold text-white bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 hover:scale-105 hover-lift hover:shadow-xl"
               >
                 {loading 
                   ? 'Loading...' 
@@ -138,7 +143,7 @@ export const AuthForm: React.FC = () => {
                   setIsSignUp(!isSignUp)
                   setError('')
                 }}
-                className="text-red-600 hover:text-red-500 transition-all duration-300 hover:scale-105"
+                className="text-red-600 hover:text-red-700 transition-all duration-300 hover:scale-105 font-medium"
               >
                 {isSignUp 
                   ? 'Already have an account? Sign in'

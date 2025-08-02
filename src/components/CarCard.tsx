@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Phone, Calendar, ChevronLeft, ChevronRight, X } from 'lucide-react';
+import { Phone, Calendar, ChevronLeft, ChevronRight, X, MapPin, Fuel, Settings, Eye } from 'lucide-react';
 import type { Car } from '../lib/supabase';
 
 interface CarCardProps {
@@ -10,6 +10,7 @@ export const CarCard: React.FC<CarCardProps> = ({ car }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [showImageModal, setShowImageModal] = useState(false);
   const [showFullDescription, setShowFullDescription] = useState(false);
+  const [imageLoading, setImageLoading] = useState(true);
 
   // Combine and memoize all available images
   const images = React.useMemo(() => {
@@ -24,7 +25,6 @@ export const CarCard: React.FC<CarCardProps> = ({ car }) => {
         }
       });
     }
-    // Filter out duplicates
     return Array.from(new Set(imageList));
   }, [car.image_url, car.image_urls]);
 
@@ -62,55 +62,53 @@ export const CarCard: React.FC<CarCardProps> = ({ car }) => {
     return `₦${formattedNumber}`;
   };
 
+  const handleImageLoad = () => {
+    setImageLoading(false);
+  };
+
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    setImageLoading(false);
+    e.currentTarget.src = 'https://images.pexels.com/photos/116675/pexels-photo-116675.jpeg?auto=compress&cs=tinysrgb&w=400';
+    e.currentTarget.alt = "Car image not available";
+  };
+
   // Image Modal Component
   const ImageModal = () => {
     if (!showImageModal || images.length === 0) return null;
 
     return (
-      <div className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-2">
-        <div className="relative max-w-2xl max-h-full">
+      <div className="fixed inset-0 bg-black bg-opacity-95 z-50 flex items-center justify-center p-4 animate-fadeInUp">
+        <div className="relative max-w-4xl max-h-full">
           <button
             onClick={() => setShowImageModal(false)}
-            className="absolute top-2 right-2 text-white bg-black bg-opacity-50 p-1 rounded-full hover:bg-opacity-70 z-10"
+            className="absolute top-4 right-4 text-white bg-black bg-opacity-50 p-2 rounded-full hover:bg-opacity-70 z-10 transition-all duration-300 hover:scale-110"
             aria-label="Close image modal"
           >
-            <X className="w-4 h-4" />
+            <X className="w-5 h-5" />
           </button>
           <img
             src={images[currentImageIndex]}
             alt={`${car.brand} ${car.model} - Image ${currentImageIndex + 1}`}
-            className="max-w-full max-h-[70vh] object-contain rounded-md"
+            className="max-w-full max-h-[80vh] object-contain rounded-lg"
           />
           {images.length > 1 && (
             <>
               <button
                 onClick={prevImage}
-                className="absolute left-2 top-1/2 transform -translate-y-1/2 text-white bg-black bg-opacity-50 p-2 rounded-full hover:bg-opacity-70"
+                className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white bg-black bg-opacity-50 p-3 rounded-full hover:bg-opacity-70 transition-all duration-300 hover:scale-110"
                 aria-label="Previous image"
               >
-                <ChevronLeft className="w-4 h-4" />
+                <ChevronLeft className="w-6 h-6" />
               </button>
               <button
                 onClick={nextImage}
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 text-white bg-black bg-opacity-50 p-2 rounded-full hover:bg-opacity-70"
+                className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white bg-black bg-opacity-50 p-3 rounded-full hover:bg-opacity-70 transition-all duration-300 hover:scale-110"
                 aria-label="Next image"
               >
-                <ChevronRight className="w-4 h-4" />
+                <ChevronRight className="w-6 h-6" />
               </button>
-              <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 text-white bg-black bg-opacity-50 px-1 py-0.5 rounded-full text-xs">
+              <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-white bg-black bg-opacity-50 px-3 py-1 rounded-full text-sm">
                 {currentImageIndex + 1} / {images.length}
-              </div>
-              <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-1">
-                {images.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setCurrentImageIndex(index)}
-                    className={`w-1 h-1 rounded-full transition-colors ${
-                      index === currentImageIndex ? 'bg-white' : 'bg-white bg-opacity-50'
-                    }`}
-                    aria-label={`View image ${index + 1}`}
-                  />
-                ))}
               </div>
             </>
           )}
@@ -118,114 +116,158 @@ export const CarCard: React.FC<CarCardProps> = ({ car }) => {
       </div>
     );
   };
-  
-  // Conditionally render "View More" button
-  const descriptionText = car.description || '';
-  const shouldShowViewMore = descriptionText.split('\n').filter(line => line.trim() !== '').length > 2 || descriptionText.length > 100;
-  
-  return (
-    <div className="bg-white rounded-md shadow-sm overflow-hidden hover:shadow-lg transition-all duration-300 max-w-[22rem] m-2 hover-lift animate-scaleIn">
-      <div className="relative w-full h-28 bg-gray-200">
-        {images.length > 0 ? (
-          <>
-            <img
-              src={images[currentImageIndex]}
-              alt={`${car.brand} ${car.model} - Image ${currentImageIndex + 1}`}
-              className="w-full h-full object-cover cursor-pointer rounded-t-md transition-transform duration-300 hover:scale-105"
-              onClick={handleImageClick}
-              onError={(e) => { e.currentTarget.src = 'https://via.placeholder.com/150?text=Image+Error'; e.currentTarget.alt = "Image not available"; }}
-            />
-            {images.length > 1 && (
-              <>
-                <button
-                  onClick={prevImage}
-                  className="absolute left-1 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-0.5 rounded-full hover:bg-opacity-70 transition-all duration-300 hover:scale-110"
-                  aria-label="Previous image"
-                >
-                  <ChevronLeft className="w-3 h-3" />
-                </button>
-                <button
-                  onClick={nextImage}
-                  className="absolute right-1 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-0.5 rounded-full hover:bg-opacity-70 transition-all duration-300 hover:scale-110"
-                  aria-label="Next image"
-                >
-                  <ChevronRight className="w-3 h-3" />
-                </button>
-                <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 flex space-x-0.5">
-                  {images.map((_, index) => (
-                    <button
-                      key={index}
-                      onClick={() => setCurrentImageIndex(index)}
-                      className={`w-1 h-1 rounded-full transition-all duration-300 hover:scale-150 ${
-                        index === currentImageIndex ? 'bg-white' : 'bg-white bg-opacity-50'
-                      }`}
-                      aria-label={`View image ${index + 1}`}
-                    />
-                  ))}
-                </div>
-                <div className="absolute top-1 right-1 bg-black bg-opacity-50 text-white text-[0.5rem] px-1 py-0.5 rounded animate-fadeInRight">
-                  Click to expand
-                </div>
-              </>
-            )}
-          </>
-        ) : (
-          <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center rounded-t-md animate-fadeInUp">
-            <div className="text-center">
-              <div className="w-6 h-6 bg-gray-300 rounded-full mx-auto mb-0.5 flex items-center justify-center animate-float">
-                <span className="text-base text-gray-500">🚗</span>
-              </div>
-              <p className="text-[0.5rem] text-gray-500">No Image</p>
-            </div>
-          </div>
-        )}
-      </div>
 
-      <div className="p-2 animate-fadeInUp animate-delay-200">
-        <div className="flex items-start justify-between mb-1">
-          <div className="flex-1 pr-1">
-            <h3 className="text-xs font-bold text-gray-900 mb-0.5 leading-tight">
-              {car.brand} {car.model}
-            </h3>
-            <div className="flex items-center text-gray-600">
-              <Calendar className="w-2.5 h-2.5 mr-0.5" />
-              <span className="text-[0.625rem]">{car.year}</span>
+  const descriptionText = car.description || '';
+  const shouldShowViewMore = descriptionText.length > 120;
+  const displayDescription = showFullDescription ? descriptionText : descriptionText.slice(0, 120) + (shouldShowViewMore ? '...' : '');
+
+  return (
+    <>
+      <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-500 max-w-sm mx-auto group hover:-translate-y-2 animate-scaleIn border border-gray-100">
+        {/* Image Section */}
+        <div className="relative h-48 bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden">
+          {images.length > 0 ? (
+            <>
+              {imageLoading && (
+                <div className="absolute inset-0 flex items-center justify-center bg-gray-200 animate-pulse">
+                  <div className="w-8 h-8 bg-gray-300 rounded-full animate-bounce"></div>
+                </div>
+              )}
+              <img
+                src={images[currentImageIndex]}
+                alt={`${car.brand} ${car.model}`}
+                className="w-full h-full object-cover cursor-pointer transition-transform duration-700 group-hover:scale-110"
+                onClick={handleImageClick}
+                onLoad={handleImageLoad}
+                onError={handleImageError}
+              />
+              
+              {/* Image Navigation */}
+              {images.length > 1 && (
+                <>
+                  <button
+                    onClick={prevImage}
+                    className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-80 text-gray-800 p-1.5 rounded-full hover:bg-opacity-100 transition-all duration-300 opacity-0 group-hover:opacity-100 hover:scale-110 shadow-lg"
+                    aria-label="Previous image"
+                  >
+                    <ChevronLeft className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={nextImage}
+                    className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-80 text-gray-800 p-1.5 rounded-full hover:bg-opacity-100 transition-all duration-300 opacity-0 group-hover:opacity-100 hover:scale-110 shadow-lg"
+                    aria-label="Next image"
+                  >
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
+                  
+                  {/* Image Indicators */}
+                  <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 flex space-x-1">
+                    {images.map((_, index) => (
+                      <button
+                        key={index}
+                        onClick={() => setCurrentImageIndex(index)}
+                        className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                          index === currentImageIndex 
+                            ? 'bg-white shadow-lg' 
+                            : 'bg-white bg-opacity-50 hover:bg-opacity-75'
+                        }`}
+                        aria-label={`View image ${index + 1}`}
+                      />
+                    ))}
+                  </div>
+                </>
+              )}
+              
+              {/* View Full Image Hint */}
+              <div className="absolute top-3 right-3 bg-black bg-opacity-50 text-white text-xs px-2 py-1 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center space-x-1">
+                <Eye className="w-3 h-3" />
+                <span>View</span>
+              </div>
+            </>
+          ) : (
+            <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+              <div className="text-center animate-fadeInUp">
+                <div className="w-12 h-12 bg-gray-300 rounded-full mx-auto mb-2 flex items-center justify-center animate-float">
+                  <span className="text-2xl text-gray-500">🚗</span>
+                </div>
+                <p className="text-xs text-gray-500 font-medium">No Image Available</p>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Content Section */}
+        <div className="p-5 space-y-4">
+          {/* Header */}
+          <div className="flex items-start justify-between">
+            <div className="flex-1">
+              <h3 className="text-lg font-bold text-gray-900 mb-1 leading-tight group-hover:text-red-600 transition-colors duration-300">
+                {car.brand} {car.model}
+              </h3>
+              <div className="flex items-center text-gray-500 space-x-3">
+                <div className="flex items-center space-x-1">
+                  <Calendar className="w-4 h-4" />
+                  <span className="text-sm font-medium">{car.year}</span>
+                </div>
+              </div>
+            </div>
+            <div className="text-right">
+              <div className="text-2xl font-bold text-green-600 mb-1">
+                {formatPrice(car.price)}
+              </div>
+              <div className="text-xs text-gray-500 uppercase tracking-wide font-medium">
+                Best Price
+              </div>
             </div>
           </div>
-          <div className="text-right flex-shrink-0">
-            <div className="text-green-500 font-bold text-xs leading-tight">
-              {formatPrice(car.price)}
+
+          {/* Description */}
+          {car.description && (
+            <div className="border-t border-gray-100 pt-3">
+              <p className="text-sm text-gray-600 leading-relaxed">
+                {displayDescription}
+              </p>
+              {shouldShowViewMore && (
+                <button
+                  onClick={() => setShowFullDescription(!showFullDescription)}
+                  className="text-red-600 text-sm hover:text-red-700 mt-2 font-medium transition-colors duration-300 hover:underline"
+                >
+                  {showFullDescription ? 'Show Less' : 'Read More'}
+                </button>
+              )}
             </div>
+          )}
+
+          {/* Action Section */}
+          <div className="border-t border-gray-100 pt-4 flex items-center justify-between">
+            <div className="flex items-center space-x-4 text-xs text-gray-500">
+              <div className="flex items-center space-x-1">
+                <MapPin className="w-3 h-3" />
+                <span>Lagos, NG</span>
+              </div>
+              <div className="flex items-center space-x-1">
+                <Settings className="w-3 h-3" />
+                <span>Inspected</span>
+              </div>
+            </div>
+            
+            <button
+              onClick={handleCallInspection}
+              className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-full flex items-center space-x-2 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl group/btn"
+              aria-label="Call for Inspection"
+            >
+              <Phone className="w-4 h-4 group-hover/btn:animate-bounce" />
+              <span className="text-sm font-medium">Call Now</span>
+            </button>
           </div>
         </div>
 
-        {car.description && (
-          <div className="mb-2">
-            <p className={`text-[0.625rem] text-gray-600 whitespace-pre-line ${!showFullDescription ? 'line-clamp-2' : ''}`}>
-              {car.description}
-            </p>
-            {shouldShowViewMore && (
-              <button
-                onClick={() => setShowFullDescription(!showFullDescription)}
-                className="text-blue-600 text-[0.625rem] hover:underline mt-0.5 block transition-all duration-300 hover:scale-105"
-              >
-                {showFullDescription ? 'View Less' : 'View More'}
-              </button>
-            )}
-          </div>
-        )}
-
-        <button
-          onClick={handleCallInspection}
-          className="w-8 h-8 bg-red-600 text-white rounded-full flex items-center justify-center hover:bg-red-700 transition-all duration-300 shadow-sm mx-auto mt-2 hover:scale-110 hover-lift animate-fadeInUp animate-delay-300"
-          aria-label="Call for Inspection"
-        >
-          <Phone className="w-4 h-4" />
-        </button>
+        {/* Hover Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none rounded-2xl"></div>
       </div>
 
       {/* Image Modal */}
       <ImageModal />
-    </div>
+    </>
   );
 };
